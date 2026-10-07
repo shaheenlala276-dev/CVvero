@@ -1,14 +1,522 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CVvero - CV Maker</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CVvero - Professional CV Maker</title>
+  <meta name="description" content="Create a professional CV with CVvero.">
+  <meta name="theme-color" content="#0f4c81">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>CVvero</h1>
-    <p>Create your professional CV</p>
+  <!-- ===================== APP HEADER ===================== -->
+  <header class="app-header" id="appHeader">
+    <div class="app-header__inner">
+      <div class="brand" id="brand">
+        <span class="brand__logo" aria-hidden="true">CV</span>
+        <div class="brand__text">
+          <h1 class="brand__name" id="appName">CVvero</h1>
+          <p class="brand__tagline" id="appTagline">Create Your CV. Create Your Future.</p>
+        </div>
+      </div>
+      <nav class="section-nav" id="sectionNav" aria-label="CV builder sections">
+        <ul class="section-nav__list">
+          <li><a class="section-nav__link" href="#personalSection">Personal</a></li>
+          <li><a class="section-nav__link" href="#summarySection">Summary</a></li>
+          <li><a class="section-nav__link" href="#educationSection">Education</a></li>
+          <li><a class="section-nav__link" href="#experienceSection">Experience</a></li>
+          <li><a class="section-nav__link" href="#skillsSection">Skills</a></li>
+          <li><a class="section-nav__link" href="#languagesSection">Languages</a></li>
+          <li><a class="section-nav__link" href="#projectsSection">Projects</a></li>
+          <li><a class="section-nav__link" href="#certificationsSection">Certifications</a></li>
+          <li><a class="section-nav__link" href="#previewSection">Preview</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
+  <main class="app-main" id="appMain">
+
+    <!-- ===================== CV BUILDER FORM ===================== -->
+    <section class="builder" id="builderSection" aria-labelledby="builderHeading">
+      <h2 class="builder__heading" id="builderHeading">CV Builder</h2>
+
+      <form class="cv-form" id="cvForm" novalidate autocomplete="on">
+
+        <!-- Personal Information -->
+        <section class="card form-section" id="personalSection" aria-labelledby="personalHeading">
+          <h3 class="card__title" id="personalHeading">Personal Information</h3>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="fullName">Full Name</label>
+              <input type="text" id="fullName" name="fullName" placeholder="e.g. Ayesha Khan" autocomplete="name">
+            </div>
+            <div class="form-field">
+              <label for="professionalTitle">Professional Title</label>
+              <input type="text" id="professionalTitle" name="professionalTitle" placeholder="e.g. Software Engineer" autocomplete="organization-title">
+            </div>
+            <div class="form-field">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="e.g. +92 300 1234567" autocomplete="tel">
+            </div>
+            <div class="form-field">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="e.g. name@example.com" autocomplete="email">
+            </div>
+            <div class="form-field form-field--full">
+              <label for="address">Address</label>
+              <input type="text" id="address" name="address" placeholder="City, Country" autocomplete="street-address">
+            </div>
+            <div class="form-field">
+              <label for="linkedin">LinkedIn</label>
+              <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourname" autocomplete="url">
+            </div>
+            <div class="form-field">
+              <label for="website">Website</label>
+              <input type="url" id="website" name="website" placeholder="https://yourwebsite.com" autocomplete="url">
+            </div>
+          </div>
+        </section>
+
+        <!-- Professional Summary -->
+        <section class="card form-section" id="summarySection" aria-labelledby="summaryHeading">
+          <h3 class="card__title" id="summaryHeading">Professional Summary</h3>
+          <div class="form-field">
+            <label for="summary">Summary / Objective</label>
+            <textarea id="summary" name="summary" rows="6" placeholder="Write a short summary of your experience, strengths and career goals."></textarea>
+          </div>
+        </section>
+
+        <!-- Education -->
+        <section class="card form-section" id="educationSection" aria-labelledby="educationHeading">
+          <h3 class="card__title" id="educationHeading">Education</h3>
+          <div class="entry-list" id="educationList" data-entry-type="education">
+            <fieldset class="entry-item" data-entry="education">
+              <legend class="entry-item__legend">Education <span class="entry-item__number">1</span></legend>
+              <div class="form-grid">
+                <label class="form-field form-field--full">
+                  <span class="form-field__label">Degree</span>
+                  <input type="text" class="education-degree" name="educationDegree[]" data-field="degree" placeholder="e.g. BSc Computer Science">
+                </label>
+                <label class="form-field form-field--full">
+                  <span class="form-field__label">Institution</span>
+                  <input type="text" class="education-institution" name="educationInstitution[]" data-field="institution" placeholder="e.g. University of Lahore">
+                </label>
+                <label class="form-field">
+                  <span class="form-field__label">Start Year</span>
+                  <input type="number" class="education-start-year" name="educationStartYear[]" data-field="startYear" inputmode="numeric" min="1950" max="2100" step="1" placeholder="e.g. 2018">
+                </label>
+                <label class="form-field">
+                  <span class="form-field__label">End Year</span>
+                  <input type="number" class="education-end-year" name="educationEndYear[]" data-field="endYear" inputmode="numeric" min="1950" max="2100" step="1" placeholder="e.g. 2022">
+                </label>
+                <label class="form-field form-field--full">
+                  <span class="form-field__label">Description</span>
+                  <textarea class="education-description" name="educationDescription[]" data-field="description" rows="3" placeholder="Achievements, major subjects, grades..."></textarea>
+                </label>
+              </div>
+              <button type="button" class="btn btn--danger btn--small remove-entry-btn" data-remove="education">Remove Education</button>
+            </fieldset>
+          </div>
+          <button type="button" class="btn btn--secondary add-entry-btn" id="addEducationBtn" data-add="education">+ Add Education</button>
+        </section>
+
+        <!-- Work Experience -->
+        <section class="card form-section" id="experienceSection" aria-labelledby="experienceHeading">
+          <h3 class="card__title" id="experienceHeading">Work Experience</h3>
+          <div class="entry-list" id="experienceList" data-entry-type="experience">
+            <fieldset class="entry-item" data-entry="experience">
+              <legend class="entry-item__legend">Experience <span class="entry-item__number">1</span></legend>
+              <div class="form-grid">
+                <label class="form-field">
+                  <span class="form-field__label">Job Title</span>
+                  <input type="text" class="experience-job-title" name="experienceJobTitle[]" data-field="jobTitle" placeholder="e.g. Frontend Developer">
+                </label>
+                <label class="form-field">
+                  <span class="form-field__label">Company</span>
+                  <input type="text" class="experience-company" name="experienceCompany[]" data-field="company" placeholder="e.g. Tech Solutions Ltd">
+                </label>
+                <label class="form-field">
+                  <span class="form-field__label">Start Date</span>
+                  <input type="month" class="experience-start-date" name="experienceStartDate[]" data-field="startDate">
+                </label>
+                <label class="form-field">
+                  <span class="form-field__label">End Date</span>
+                  <input type="month" class="experience-end-date" name="experienceEndDate[]" data-field="endDate">
+                </label>
+                <label class="form-field form-field--full">
+                  <span class="form-field__label">Description</span>
+                  <textarea class="experience-description" name="experienceDescription[]" data-field="description" rows="4" placeholder="Responsibilities and achievements..."></textarea>
+                </label>
+              </div>
+              <button type="button" class="btn btn--danger btn--small remove-entry-btn" data-remove="experience">Remove Experience</button>
+            </fieldset>
+          </div>
+          <button type="button" class="btn btn--secondary add-entry-btn" id="addExperienceBtn" data-add="experience">+ Add Experience</button>
+        </section>
+
+        <!-- Skills -->
+        <section class="card form-section" id="skillsSection" aria-labelledby="skillsHeading">
+          <h3 class="card__title" id="skillsHeading">Skills</h3>
+          <div class="entry-list" id="skillsList" data-entry-type="skill">
+            <fieldset class="entry-item" data-entry="skill">
+              <legend class="entry-item__legend">Skill <span class="entry-item__number">1</span></legend>
+              <div class="form-grid">
+                <label class="form-field">
+                  <span class="form-field__label">Skill Name</span>
+                  <input type="text" class="skill-name" name="skillName[]" data-field="name" placeholder="e.g. JavaScript">
+                </label>
+                <label class="form-field">
+                  <span class="form-field__label">Skill Level</span>
+                  <select class="skill-level" name="skillLevel[]" data-field="level">
+                    <option value="">Select level</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                    <option value="Expert">Expert</option>
+                  </select>
+                </label>
+              </div>
+              <button type="button" class="btn btn--danger btn--small remove-entry-btn" data-remove="skill">Remove Skill</button>
+            </fieldset>
+          </div>
+          <button type="button" class="btn btn--secondary add-entry-btn" id="addSkillBtn" data-add="skill">+ Add Skill</button>
+        </section>
+
+        <!-- Languages -->
+        <section class="card form-section" id="languagesSection" aria-labelledby="languagesHeading">
+          <h3 class="card__title" id="languagesHeading">Languages</h3>
+          <div class="entry-list" id="languagesList" data-entry-type="language">
+            <fieldset class="entry-item" data-entry="language">
+              <legend class="entry-item__legend">Language <span class="entry-item__number">1</span></legend>
+              <div class="form-grid">
+                <label class="form-field">
+                  <span class="form-field__label">Language</span>
+                  <input type="text" class="language-name" name="languageName[]" data-field="name" placeholder="e.g. English">
+                </label>
+                <label class="form-field">
+                  <span class="form-field__label">Proficiency</span>
+                  <select class="language-proficiency" name="languageProficiency[]" data-field="proficiency">
+                    <option value="">Select proficiency</option>
+                    <option value="Basic">Basic</option>
+                    <option value="Conversational">Conversational</option>
+                    <option value="Professional">Professional</option>
+                    <option value="Fluent">Fluent</option>
+                    <option value="Native">Native</option>
+                  </select>
+                </label>
+              </div>
+              <button type="button" class="btn btn--danger btn--small remove-entry-btn" data-remove="language">Remove Language</button>
+            </fieldset>
+          </div>
+          <button type="button" class="btn btn--secondary add-entry-btn" id="addLanguageBtn" data-add="language">+ Add Language</button>
+        </section>
+
+        <!-- Projects -->
+        <section class="card form-section" id="projectsSection" aria-labelledby="projectsHeading">
+          <h3 class="card__title" id="projectsHeading">Projects</h3>
+          <div class="entry-list" id="projectsList" data-entry-type="project">
+            <fieldset class="entry-item" data-entry="project">
+              <legend class="entry-item__legend">Project <span class="entry-item__number">1</span></legend>
+              <div class="form-grid">
+                <label class="form-field form-field--full">
+                  <span class="form-field__label">Project Name</span>
+                  <input type="text" class="project-name" name="projectName[]" data-field="name" placeholder="e.g. Portfolio Website">
+                </label>
+                <label class="form-field form-field--full">
+                  <span class="form-field__label">Description</span>
+                  <textarea class="project-description" name="projectDescription[]" data-field="description" rows="3" placeholder="What the project does and your role..."></textarea>
+                </label>
+                <label class="form-field form-field--full">
+                  <span class="form-field__label">Project Link</span>
+                  <input type="url" class="project-link" name="projectLink[]" data-field="link" placeholder="https://github.com/yourname/project">
+                </label>
+              </div>
+              <button type="button" class="btn btn--danger btn--small remove-entry-btn" data-remove="project">Remove Project</button>
+            </fieldset>
+          </div>
+          <button type="button" class="btn btn--secondary add-entry-btn" id="addProjectBtn" data-add="project">+ Add Project</button>
+        </section>
+
+        <!-- Certifications -->
+        <section class="card form-section" id="certificationsSection" aria-labelledby="certificationsHeading">
+          <h3 class="card__title" id="certificationsHeading">Certifications</h3>
+          <div class="entry-list" id="certificationsList" data-entry-type="certification">
+            <fieldset class="entry-item" data-entry="certification">
+              <legend class="entry-item__legend">Certification <span class="entry-item__number">1</span></legend>
+              <div class="form-grid">
+                <label class="form-field form-field--full">
+                  <span class="form-field__label">Certification Name</span>
+                  <input type="text" class="certification-name" name="certificationName[]" data-field="name" placeholder="e.g. Google IT Support">
+                </label>
+                <label class="form-field">
+                  <span class="form-field__label">Issuing Organization</span>
+                  <input type="text" class="certification-organization" name="certificationOrganization[]" data-field="organization" placeholder="e.g. Coursera">
+                </label>
+                <label class="form-field">
+                  <span class="form-field__label">Year</span>
+                  <input type="number" class="certification-year" name="certificationYear[]" data-field="year" inputmode="numeric" min="1950" max="2100" step="1" placeholder="e.g. 2023">
+                </label>
+              </div>
+              <button type="button" class="btn btn--danger btn--small remove-entry-btn" data-remove="certification">Remove Certification</button>
+            </fieldset>
+          </div>
+          <button type="button" class="btn btn--secondary add-entry-btn" id="addCertificationBtn" data-add="certification">+ Add Certification</button>
+        </section>
+
+        <!-- Main Actions -->
+        <section class="card form-actions" id="mainActions" aria-label="Main actions">
+          <button type="button" class="btn btn--primary" id="previewCvBtn">Preview CV</button>
+          <button type="button" class="btn btn--outline" id="clearFormBtn">Clear Form</button>
+        </section>
+
+      </form>
+    </section>
+
+    <!-- ===================== CV PREVIEW ===================== -->
+    <section class="preview" id="previewSection" aria-labelledby="previewHeading">
+      <h2 class="preview__heading" id="previewHeading">CV Preview</h2>
+
+      <div class="preview__sheet-wrapper" id="previewWrapper">
+        <article class="cv-sheet" id="cvPreview" aria-live="polite">
+
+          <header class="cv-header" id="cvHeader">
+            <h3 class="cv-name" id="previewFullName">Your Name</h3>
+            <p class="cv-title" id="previewProfessionalTitle">Professional Title</p>
+            <ul class="cv-contact" id="previewContact">
+              <li class="cv-contact__item" id="previewPhone">Phone Number</li>
+              <li class="cv-contact__item" id="previewEmail">Email Address</li>
+              <li class="cv-contact__item" id="previewAddress">Address</li>
+              <li class="cv-contact__item" id="previewLinkedin">LinkedIn</li>
+              <li class="cv-contact__item" id="previewWebsite">Website</li>
+            </ul>
+          </header>
+
+          <section class="cv-section" id="previewSummarySection" aria-labelledby="previewSummaryHeading">
+            <h4 class="cv-section__title" id="previewSummaryHeading">Professional Summary</h4>
+            <p class="cv-summary" id="previewSummary">Your professional summary will appear here.</p>
+          </section>
+
+          <section class="cv-section" id="previewExperienceSection" aria-labelledby="previewExperienceHeading">
+            <h4 class="cv-section__title" id="previewExperienceHeading">Work Experience</h4>
+            <div class="cv-list" id="previewExperienceList">
+              <article class="cv-item cv-item--placeholder">
+                <h5 class="cv-item__title">Job Title</h5>
+                <p class="cv-item__subtitle">Company</p>
+                <p class="cv-item__date">Start Date - End Date</p>
+                <p class="cv-item__text">Description of your responsibilities and achievements.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="cv-section" id="previewEducationSection" aria-labelledby="previewEducationHeading">
+            <h4 class="cv-section__title" id="previewEducationHeading">Education</h4>
+            <div class="cv-list" id="previewEducationList">
+              <article class="cv-item cv-item--placeholder">
+                <h5 class="cv-item__title">Degree</h5>
+                <p class="cv-item__subtitle">Institution</p>
+                <p class="cv-item__date">Start Year - End Year</p>
+                <p class="cv-item__text">Description of your studies.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="cv-section" id="previewSkillsSection" aria-labelledby="previewSkillsHeading">
+            <h4 class="cv-section__title" id="previewSkillsHeading">Skills</h4>
+            <ul class="cv-tags" id="previewSkillsList">
+              <li class="cv-tag cv-tag--placeholder">Skill (Level)</li>
+            </ul>
+          </section>
+
+          <section class="cv-section" id="previewLanguagesSection" aria-labelledby="previewLanguagesHeading">
+            <h4 class="cv-section__title" id="previewLanguagesHeading">Languages</h4>
+            <ul class="cv-tags" id="previewLanguagesList">
+              <li class="cv-tag cv-tag--placeholder">Language (Proficiency)</li>
+            </ul>
+          </section>
+
+          <section class="cv-section" id="previewProjectsSection" aria-labelledby="previewProjectsHeading">
+            <h4 class="cv-section__title" id="previewProjectsHeading">Projects</h4>
+            <div class="cv-list" id="previewProjectsList">
+              <article class="cv-item cv-item--placeholder">
+                <h5 class="cv-item__title">Project Name</h5>
+                <p class="cv-item__text">Project description.</p>
+                <p class="cv-item__link">Project Link</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="cv-section" id="previewCertificationsSection" aria-labelledby="previewCertificationsHeading">
+            <h4 class="cv-section__title" id="previewCertificationsHeading">Certifications</h4>
+            <div class="cv-list" id="previewCertificationsList">
+              <article class="cv-item cv-item--placeholder">
+                <h5 class="cv-item__title">Certification Name</h5>
+                <p class="cv-item__subtitle">Issuing Organization</p>
+                <p class="cv-item__date">Year</p>
+              </article>
+            </div>
+          </section>
+
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== TEMPLATES (used by script.js to add entries) ===================== -->
+  <template id="educationTemplate">
+    <fieldset class="entry-item" data-entry="education">
+      <legend class="entry-item__legend">Education <span class="entry-item__number"></span></legend>
+      <div class="form-grid">
+        <label class="form-field form-field--full">
+          <span class="form-field__label">Degree</span>
+          <input type="text" class="education-degree" name="educationDegree[]" data-field="degree" placeholder="e.g. BSc Computer Science">
+        </label>
+        <label class="form-field form-field--full">
+          <span class="form-field__label">Institution</span>
+          <input type="text" class="education-institution" name="educationInstitution[]" data-field="institution" placeholder="e.g. University of Lahore">
+        </label>
+        <label class="form-field">
+          <span class="form-field__label">Start Year</span>
+          <input type="number" class="education-start-year" name="educationStartYear[]" data-field="startYear" inputmode="numeric" min="1950" max="2100" step="1" placeholder="e.g. 2018">
+        </label>
+        <label class="form-field">
+          <span class="form-field__label">End Year</span>
+          <input type="number" class="education-end-year" name="educationEndYear[]" data-field="endYear" inputmode="numeric" min="1950" max="2100" step="1" placeholder="e.g. 2022">
+        </label>
+        <label class="form-field form-field--full">
+          <span class="form-field__label">Description</span>
+          <textarea class="education-description" name="educationDescription[]" data-field="description" rows="3" placeholder="Achievements, major subjects, grades..."></textarea>
+        </label>
+      </div>
+      <button type="button" class="btn btn--danger btn--small remove-entry-btn" data-remove="education">Remove Education</button>
+    </fieldset>
+  </template>
+
+  <template id="experienceTemplate">
+    <fieldset class="entry-item" data-entry="experience">
+      <legend class="entry-item__legend">Experience <span class="entry-item__number"></span></legend>
+      <div class="form-grid">
+        <label class="form-field">
+          <span class="form-field__label">Job Title</span>
+          <input type="text" class="experience-job-title" name="experienceJobTitle[]" data-field="jobTitle" placeholder="e.g. Frontend Developer">
+        </label>
+        <label class="form-field">
+          <span class="form-field__label">Company</span>
+          <input type="text" class="experience-company" name="experienceCompany[]" data-field="company" placeholder="e.g. Tech Solutions Ltd">
+        </label>
+        <label class="form-field">
+          <span class="form-field__label">Start Date</span>
+          <input type="month" class="experience-start-date" name="experienceStartDate[]" data-field="startDate">
+        </label>
+        <label class="form-field">
+          <span class="form-field__label">End Date</span>
+          <input type="month" class="experience-end-date" name="experienceEndDate[]" data-field="endDate">
+        </label>
+        <label class="form-field form-field--full">
+          <span class="form-field__label">Description</span>
+          <textarea class="experience-description" name="experienceDescription[]" data-field="description" rows="4" placeholder="Responsibilities and achievements..."></textarea>
+        </label>
+      </div>
+      <button type="button" class="btn btn--danger btn--small remove-entry-btn" data-remove="experience">Remove Experience</button>
+    </fieldset>
+  </template>
+
+  <template id="skillTemplate">
+    <fieldset class="entry-item" data-entry="skill">
+      <legend class="entry-item__legend">Skill <span class="entry-item__number"></span></legend>
+      <div class="form-grid">
+        <label class="form-field">
+          <span class="form-field__label">Skill Name</span>
+          <input type="text" class="skill-name" name="skillName[]" data-field="name" placeholder="e.g. JavaScript">
+        </label>
+        <label class="form-field">
+          <span class="form-field__label">Skill Level</span>
+          <select class="skill-level" name="skillLevel[]" data-field="level">
+            <option value="">Select level</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+            <option value="Expert">Expert</option>
+          </select>
+        </label>
+      </div>
+      <button type="button" class="btn btn--danger btn--small remove-entry-btn" data-remove="skill">Remove Skill</button>
+    </fieldset>
+  </template>
+
+  <template id="languageTemplate">
+    <fieldset class="entry-item" data-entry="language">
+      <legend class="entry-item__legend">Language <span class="entry-item__number"></span></legend>
+      <div class="form-grid">
+        <label class="form-field">
+          <span class="form-field__label">Language</span>
+          <input type="text" class="language-name" name="languageName[]" data-field="name" placeholder="e.g. English">
+        </label>
+        <label class="form-field">
+          <span class="form-field__label">Proficiency</span>
+          <select class="language-proficiency" name="languageProficiency[]" data-field="proficiency">
+            <option value="">Select proficiency</option>
+            <option value="Basic">Basic</option>
+            <option value="Conversational">Conversational</option>
+            <option value="Professional">Professional</option>
+            <option value="Fluent">Fluent</option>
+            <option value="Native">Native</option>
+          </select>
+        </label>
+      </div>
+      <button type="button" class="btn btn--danger btn--small remove-entry-btn" data-remove="language">Remove Language</button>
+    </fieldset>
+  </template>
+
+  <template id="projectTemplate">
+    <fieldset class="entry-item" data-entry="project">
+      <legend class="entry-item__legend">Project <span class="entry-item__number"></span></legend>
+      <div class="form-grid">
+        <label class="form-field form-field--full">
+          <span class="form-field__label">Project Name</span>
+          <input type="text" class="project-name" name="projectName[]" data-field="name" placeholder="e.g. Portfolio Website">
+        </label>
+        <label class="form-field form-field--full">
+          <span class="form-field__label">Description</span>
+          <textarea class="project-description" name="projectDescription[]" data-field="description" rows="3" placeholder="What the project does and your role..."></textarea>
+        </label>
+        <label class="form-field form-field--full">
+          <span class="form-field__label">Project Link</span>
+          <input type="url" class="project-link" name="projectLink[]" data-field="link" placeholder="https://github.com/yourname/project">
+        </label>
+      </div>
+      <button type="button" class="btn btn--danger btn--small remove-entry-btn" data-remove="project">Remove Project</button>
+    </fieldset>
+  </template>
+
+  <template id="certificationTemplate">
+    <fieldset class="entry-item" data-entry="certification">
+      <legend class="entry-item__legend">Certification <span class="entry-item__number"></span></legend>
+      <div class="form-grid">
+        <label class="form-field form-field--full">
+          <span class="form-field__label">Certification Name</span>
+          <input type="text" class="certification-name" name="certificationName[]" data-field="name" placeholder="e.g. Google IT Support">
+        </label>
+        <label class="form-field">
+          <span class="form-field__label">Issuing Organization</span>
+          <input type="text" class="certification-organization" name="certificationOrganization[]" data-field="organization" placeholder="e.g. Coursera">
+        </label>
+        <label class="form-field">
+          <span class="form-field__label">Year</span>
+          <input type="number" class="certification-year" name="certificationYear[]" data-field="year" inputmode="numeric" min="1950" max="2100" step="1" placeholder="e.g. 2023">
+        </label>
+      </div>
+      <button type="button" class="btn btn--danger btn--small remove-entry-btn" data-remove="certification">Remove Certification</button>
+    </fieldset>
+  </template>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="app-footer" id="appFooter">
+    <p class="app-footer__text">&copy; <span id="footerYear">2026</span> CVvero. Create Your CV. Create Your Future.</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
