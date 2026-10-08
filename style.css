@@ -1,7 +1,18 @@
 /* ==========================================================================
    CVvero - style.css (Version 1)
-   Mobile-first, system fonts only, fully offline.
+   Mobile-first, system fonts for the app and CV body text. Michroma is
+   loaded from a local file (fonts/Michroma-Regular.woff2) and used ONLY for
+   the CV name and CV section titles. Fully offline.
    ========================================================================== */
+
+/* ---------- 0. Local font (offline, no external requests) ---------- */
+@font-face {
+  font-family: "Michroma";
+  src: url("fonts/Michroma-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* ---------- 1. Design tokens ---------- */
 :root {
@@ -21,6 +32,7 @@
 
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-cv: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-cv-heading: "Michroma", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -530,11 +542,13 @@ textarea[aria-invalid="true"] {
   border-bottom: 3px solid var(--color-primary);
 }
 
+/* Michroma: CV person's name only (Michroma has a single regular weight) */
 .cv-name {
-  font-size: 1.9rem;
-  line-height: 1.15;
-  font-weight: 800;
-  letter-spacing: 0.3px;
+  font-family: var(--font-cv-heading);
+  font-size: 1.3rem;
+  line-height: 1.25;
+  font-weight: 400;
+  letter-spacing: 0;
   color: var(--color-primary-dark);
 }
 
@@ -572,12 +586,14 @@ textarea[aria-invalid="true"] {
   margin-top: 0;
 }
 
+/* Michroma: CV section titles only (single regular weight, wide letterforms) */
 .cv-section__title {
   margin-bottom: var(--space-3);
   padding-bottom: 4px;
-  font-size: 0.95rem;
-  font-weight: 800;
-  letter-spacing: 1.5px;
+  font-family: var(--font-cv-heading);
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--color-primary);
   border-bottom: 1.5px solid var(--color-border);
@@ -708,7 +724,7 @@ textarea[aria-invalid="true"] {
   }
 
   .cv-name {
-    font-size: 2.2rem;
+    font-size: 1.7rem;
   }
 }
 
@@ -833,8 +849,9 @@ textarea[aria-invalid="true"] {
     box-shadow: none;
   }
 
+  /* .cv-name and .cv-section__title keep Michroma in print (font-family is not overridden here) */
   .cv-name {
-    font-size: 24pt;
+    font-size: 17pt;
   }
 
   .cv-title {
