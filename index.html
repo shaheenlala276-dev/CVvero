@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-template="modern">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,6 +22,7 @@
       </div>
       <nav class="section-nav" id="sectionNav" aria-label="CV builder sections">
         <ul class="section-nav__list">
+          <li><a class="section-nav__link" href="#templateSection">Templates</a></li>
           <li><a class="section-nav__link" href="#personalSection">Personal</a></li>
           <li><a class="section-nav__link" href="#summarySection">Summary</a></li>
           <li><a class="section-nav__link" href="#educationSection">Education</a></li>
@@ -41,6 +42,55 @@
     <!-- ===================== CV BUILDER FORM ===================== -->
     <section class="builder" id="builderSection" aria-labelledby="builderHeading">
       <h2 class="builder__heading" id="builderHeading">CV Builder</h2>
+
+      <!-- Template picker (outside the form, so it never touches form data) -->
+      <section class="card template-section" id="templateSection" aria-labelledby="templateHeading">
+        <h3 class="card__title" id="templateHeading">Choose Template</h3>
+        <div class="template-grid" id="templateGrid" role="radiogroup" aria-labelledby="templateHeading">
+
+          <label class="template-card">
+            <input type="radio" class="template-card__input" name="cvTemplate" value="classic">
+            <span class="template-card__body">
+              <span class="tpl-thumb tpl-thumb--classic" aria-hidden="true"></span>
+              <span class="template-card__name">Classic Professional</span>
+            </span>
+          </label>
+
+          <label class="template-card">
+            <input type="radio" class="template-card__input" name="cvTemplate" value="modern" checked>
+            <span class="template-card__body">
+              <span class="tpl-thumb tpl-thumb--modern" aria-hidden="true"></span>
+              <span class="template-card__name">Modern Two-Column</span>
+            </span>
+          </label>
+
+          <label class="template-card">
+            <input type="radio" class="template-card__input" name="cvTemplate" value="ats">
+            <span class="template-card__body">
+              <span class="tpl-thumb tpl-thumb--ats" aria-hidden="true"></span>
+              <span class="template-card__name">Minimal ATS-Friendly</span>
+            </span>
+          </label>
+
+          <label class="template-card">
+            <input type="radio" class="template-card__input" name="cvTemplate" value="green">
+            <span class="template-card__body">
+              <span class="tpl-thumb tpl-thumb--green" aria-hidden="true"></span>
+              <span class="template-card__name">Elegant Green</span>
+            </span>
+          </label>
+
+          <label class="template-card">
+            <input type="radio" class="template-card__input" name="cvTemplate" value="gradient">
+            <span class="template-card__body">
+              <span class="tpl-thumb tpl-thumb--gradient" aria-hidden="true"></span>
+              <span class="template-card__name">Corporate Blue Gradient</span>
+            </span>
+          </label>
+
+        </div>
+        <a class="btn btn--secondary template-section__link" href="#previewSection">View Preview</a>
+      </section>
 
       <form class="cv-form" id="cvForm" novalidate autocomplete="on">
 
@@ -279,9 +329,9 @@
       <h2 class="preview__heading" id="previewHeading">CV Preview</h2>
 
       <div class="preview__sheet-wrapper" id="previewWrapper">
-        <article class="cv-sheet" id="cvPreview" aria-live="polite">
+        <article class="cv-sheet" id="cvPreview" data-template="modern" aria-live="polite">
 
-          <!-- Sidebar: contact, skills, languages -->
+          <!-- Sidebar: contact, skills, languages (Modern template; other templates move these into the main column) -->
           <aside class="cv-sidebar" id="cvSidebar">
 
             <ul class="cv-contact" id="previewContact">
