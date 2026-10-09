@@ -1,8 +1,12 @@
 /* ==========================================================================
-   CVvero - style.css (Version 3: Modern Two-Column CV, blue gradient accents)
+   CVvero - style.css (Version 4: five selectable CV templates)
    Mobile-first, system fonts for the app and CV body text. Michroma is
-   loaded from a local file (fonts/Michroma-Regular.woff2) and used ONLY for
-   the CV name and CV section titles. Fully offline.
+   loaded from a local file (fonts/Michroma-Regular.woff2) and used for the
+   CV name and CV section titles (all templates except Minimal ATS-Friendly,
+   which uses a plain system font). Fully offline.
+
+   Templates are switched by the data-template attribute on #cvPreview:
+   classic | modern | ats | green | gradient
    ========================================================================== */
 
 /* ---------- 0. Local font (offline, no external requests) ---------- */
@@ -36,8 +40,12 @@
   --cv-royal: #1e4a9a;
   --cv-navy-text: #e8eef6;
   --cv-rule: #cfd8e3;
+  --cv-green: #2e6b57;
+  --cv-green-dark: #1f4d3d;
+  --cv-green-soft: #e6f1ec;
+  --cv-green-line: #cfe0d6;
 
-  /* Sidebar stripe: navy to muted royal blue, left to right (page-safe), then white. */
+  /* Modern template sidebar stripe: navy to muted royal blue, then white. */
   --cv-stripe: linear-gradient(
     to right,
     var(--cv-navy-deep) 0,
@@ -49,6 +57,7 @@
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-cv: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-cv-heading: "Michroma", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-cv-plain: Arial, "Helvetica Neue", Helvetica, sans-serif;
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -261,6 +270,10 @@ a {
 .cv-form {
   display: grid;
   gap: var(--space-4);
+}
+
+.template-section {
+  margin-bottom: var(--space-4);
 }
 
 .card {
@@ -525,6 +538,213 @@ textarea[aria-invalid="true"] {
   width: 100%;
 }
 
+/* ---------- 9b. Template picker ---------- */
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.template-card {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The real radio covers the whole card: tappable, keyboard-focusable, accessible. */
+.template-card__input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.template-card__body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  height: 100%;
+  padding: 10px 8px 12px;
+  background: #f8fafc;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.template-card:hover .template-card__body {
+  border-color: #aebccb;
+}
+
+.template-card__input:checked + .template-card__body {
+  background: var(--color-primary-light);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(26, 115, 184, 0.18);
+}
+
+.template-card__input:checked + .template-card__body::after {
+  content: "\2713";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #ffffff;
+  background: var(--color-accent);
+  border-radius: 50%;
+}
+
+.template-card__input:focus-visible + .template-card__body {
+  outline: 3px solid rgba(26, 115, 184, 0.55);
+  outline-offset: 2px;
+}
+
+.template-card__name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.template-card__input:checked + .template-card__body .template-card__name {
+  color: var(--color-primary);
+}
+
+.template-section__link {
+  text-decoration: none;
+}
+
+/* Mini previews: drawn with CSS only (no images, no fake text). */
+.tpl-thumb {
+  display: block;
+  flex: 0 0 auto;
+  width: 84px;
+  height: 118px;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(15, 40, 70, 0.12);
+}
+
+.tpl-thumb--classic {
+  background:
+    linear-gradient(#13294b, #13294b) 9px 9px / 42px 5px no-repeat,
+    linear-gradient(#8f9db0, #8f9db0) 9px 18px / 26px 3px no-repeat,
+    linear-gradient(#c3ccd6, #c3ccd6) 9px 24px / 50px 2px no-repeat,
+    linear-gradient(#13294b, #13294b) 9px 30px / 64px 1.5px no-repeat,
+    linear-gradient(#13294b, #13294b) 9px 38px / 22px 3px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 45px / 62px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 50px / 54px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 55px / 58px 2px no-repeat,
+    linear-gradient(#13294b, #13294b) 9px 65px / 22px 3px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 72px / 62px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 77px / 50px 2px no-repeat,
+    linear-gradient(#13294b, #13294b) 9px 90px / 18px 3px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 97px / 56px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 102px / 44px 2px no-repeat,
+    #ffffff;
+}
+
+.tpl-thumb--modern {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)) 5px 12px / 16px 2px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)) 5px 17px / 18px 2px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)) 5px 22px / 14px 2px no-repeat,
+    linear-gradient(#ffffff, #ffffff) 5px 34px / 12px 2px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)) 5px 40px / 17px 2px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)) 5px 45px / 14px 2px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)) 5px 50px / 16px 2px no-repeat,
+    linear-gradient(#13294b, #13294b) 35px 9px / 38px 5px no-repeat,
+    linear-gradient(#8f9db0, #8f9db0) 35px 18px / 26px 3px no-repeat,
+    linear-gradient(#13294b, #13294b) 35px 25px / 40px 1.5px no-repeat,
+    linear-gradient(#13294b, #13294b) 35px 33px / 18px 3px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 35px 40px / 40px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 35px 45px / 34px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 35px 50px / 38px 2px no-repeat,
+    linear-gradient(#13294b, #13294b) 35px 60px / 18px 3px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 35px 67px / 40px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 35px 72px / 32px 2px no-repeat,
+    linear-gradient(#13294b, #13294b) 35px 86px / 16px 3px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 35px 93px / 38px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 35px 98px / 30px 2px no-repeat,
+    linear-gradient(to right, #0d2043, #1e4a9a) 0 0 / 28px 100% no-repeat,
+    #ffffff;
+}
+
+.tpl-thumb--ats {
+  background:
+    linear-gradient(#111111, #111111) 9px 9px / 40px 5px no-repeat,
+    linear-gradient(#777777, #777777) 9px 18px / 28px 2px no-repeat,
+    linear-gradient(#aaaaaa, #aaaaaa) 9px 23px / 56px 2px no-repeat,
+    linear-gradient(#111111, #111111) 9px 29px / 64px 1px no-repeat,
+    linear-gradient(#111111, #111111) 9px 37px / 20px 3px no-repeat,
+    linear-gradient(#c2c2c2, #c2c2c2) 9px 44px / 62px 2px no-repeat,
+    linear-gradient(#c2c2c2, #c2c2c2) 9px 49px / 54px 2px no-repeat,
+    linear-gradient(#c2c2c2, #c2c2c2) 9px 54px / 58px 2px no-repeat,
+    linear-gradient(#111111, #111111) 9px 64px / 20px 3px no-repeat,
+    linear-gradient(#c2c2c2, #c2c2c2) 9px 71px / 62px 2px no-repeat,
+    linear-gradient(#c2c2c2, #c2c2c2) 9px 76px / 50px 2px no-repeat,
+    linear-gradient(#111111, #111111) 9px 90px / 16px 3px no-repeat,
+    linear-gradient(#c2c2c2, #c2c2c2) 9px 97px / 56px 2px no-repeat,
+    linear-gradient(#c2c2c2, #c2c2c2) 9px 102px / 44px 2px no-repeat,
+    #ffffff;
+}
+
+.tpl-thumb--green {
+  background:
+    linear-gradient(#2e6b57, #2e6b57) 9px 9px / 42px 5px no-repeat,
+    linear-gradient(#8fb3a3, #8fb3a3) 9px 18px / 26px 3px no-repeat,
+    linear-gradient(#c9d6d0, #c9d6d0) 9px 24px / 50px 2px no-repeat,
+    linear-gradient(#2e6b57, #2e6b57) 9px 30px / 64px 1.5px no-repeat,
+    linear-gradient(#2e6b57, #2e6b57) 9px 38px / 2px 6px no-repeat,
+    linear-gradient(#2e6b57, #2e6b57) 14px 39px / 22px 3px no-repeat,
+    linear-gradient(#d3dcd7, #d3dcd7) 9px 47px / 62px 2px no-repeat,
+    linear-gradient(#d3dcd7, #d3dcd7) 9px 52px / 54px 2px no-repeat,
+    linear-gradient(#d3dcd7, #d3dcd7) 9px 57px / 58px 2px no-repeat,
+    linear-gradient(#2e6b57, #2e6b57) 9px 67px / 2px 6px no-repeat,
+    linear-gradient(#2e6b57, #2e6b57) 14px 68px / 22px 3px no-repeat,
+    linear-gradient(#d3dcd7, #d3dcd7) 9px 76px / 62px 2px no-repeat,
+    linear-gradient(#d3dcd7, #d3dcd7) 9px 81px / 50px 2px no-repeat,
+    linear-gradient(#2e6b57, #2e6b57) 9px 92px / 2px 6px no-repeat,
+    linear-gradient(#2e6b57, #2e6b57) 14px 93px / 16px 3px no-repeat,
+    linear-gradient(#cfe0d6, #cfe0d6) 9px 102px / 16px 6px no-repeat,
+    linear-gradient(#cfe0d6, #cfe0d6) 29px 102px / 14px 6px no-repeat,
+    linear-gradient(#cfe0d6, #cfe0d6) 47px 102px / 18px 6px no-repeat,
+    #ffffff;
+}
+
+.tpl-thumb--gradient {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)) 12px 12px / 36px 4px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)) 12px 19px / 24px 2px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)) 12px 26px / 52px 2px no-repeat,
+    linear-gradient(120deg, #0d2043, #13294b 45%, #1e4a9a) 6px 6px / 70px 28px no-repeat,
+    linear-gradient(#1e4a9a, #1e4a9a) 9px 44px / 22px 3px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 51px / 62px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 56px / 54px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 61px / 58px 2px no-repeat,
+    linear-gradient(#1e4a9a, #1e4a9a) 9px 71px / 22px 3px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 78px / 62px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 83px / 50px 2px no-repeat,
+    linear-gradient(#1e4a9a, #1e4a9a) 9px 94px / 16px 3px no-repeat,
+    linear-gradient(#d4e3f3, #d4e3f3) 9px 102px / 16px 6px no-repeat,
+    linear-gradient(#d4e3f3, #d4e3f3) 29px 102px / 14px 6px no-repeat,
+    linear-gradient(#d4e3f3, #d4e3f3) 47px 102px / 18px 6px no-repeat,
+    #ffffff;
+}
+
 /* ---------- 10. CV preview wrapper ---------- */
 .preview__sheet-wrapper {
   width: 100%;
@@ -534,12 +754,7 @@ textarea[aria-invalid="true"] {
   overflow-x: auto;
 }
 
-/* ---------- 11. CV sheet: modern two-column template ----------
-   Layout: a floated sidebar (33.333% wide) plus a main column offset by the
-   same width. The sidebar gradient is painted by a horizontal gradient on the
-   sheet itself (--cv-stripe), so it continues unbroken down every page.
-   The main column stays white.
-   ---------------------------------------------------------------- */
+/* ---------- 11. CV sheet: shared base (all templates) ---------- */
 .cv-sheet {
   display: flow-root;
   width: 100%;
@@ -551,7 +766,6 @@ textarea[aria-invalid="true"] {
   line-height: 1.5;
   color: #1f2933;
   background-color: #ffffff;
-  background-image: var(--cv-stripe);
   aspect-ratio: 210 / 297; /* A4-like proportions on screen; grows with content */
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-md);
@@ -564,109 +778,27 @@ textarea[aria-invalid="true"] {
   display: none !important;
 }
 
-/* ----- Sidebar (contact, skills, languages) ----- */
-.cv-sidebar {
-  float: left;
-  width: 33.333%;
-  padding: 32px 18px;
-  color: var(--cv-navy-text);
+/* The sidebar only exists in the Modern template; others use one column. */
+.cv-sheet:not([data-template="modern"]) .cv-sidebar {
+  display: none;
 }
 
-.cv-sidebar .cv-section {
-  margin-top: 24px;
-}
-
-/* Sidebar headings: real section titles plus the "Contact" label.
-   The divider fades out softly (border-image, so it prints as a border). */
-.cv-contact::before,
-.cv-sidebar .cv-section__title {
-  display: block;
-  margin-bottom: 10px;
-  padding-bottom: 4px;
-  font-family: var(--font-cv-heading);
-  font-size: 0.7rem;
-  font-weight: 400;
-  letter-spacing: 1.2px;
-  line-height: 1.4;
-  text-transform: uppercase;
-  color: #ffffff;
-  border-width: 0 0 1px;
-  border-style: solid;
-  border-color: rgba(255, 255, 255, 0.35);
-  border-image: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0.6),
-      rgba(255, 255, 255, 0.08)
-    ) 1;
-}
-
-.cv-contact::before {
-  content: "Contact";
-}
-
-.cv-contact {
-  display: block;
-}
-
-.cv-contact__item {
-  min-width: 0;
-  margin-top: 6px;
-  font-size: 0.85rem;
-  line-height: 1.4;
-  color: var(--cv-navy-text);
-}
-
-.cv-contact__item a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Skills and languages: clean plain list in the sidebar (no pills, no bars) */
-.cv-tags {
-  display: block;
-}
-
-.cv-tag {
-  display: block;
-  margin-top: 6px;
-  padding: 0;
-  font-size: 0.85rem;
-  font-weight: 400;
-  line-height: 1.4;
-  color: var(--cv-navy-text);
-  background: none;
-  border: 0;
-  border-radius: 0;
-}
-
-/* ----- Main column (white) ----- */
 .cv-main {
-  margin-left: 33.333%;
-  padding: 32px 26px;
+  padding: 32px 36px;
 }
 
-/* Header rule under the name: navy fading to royal blue to light grey */
+/* Header */
 .cv-header {
   padding-bottom: 14px;
-  border-width: 0 0 2px;
-  border-style: solid;
-  border-color: var(--cv-navy);
-  border-image: linear-gradient(
-      to right,
-      var(--cv-navy-deep),
-      var(--cv-royal) 55%,
-      var(--cv-rule)
-    ) 1;
 }
 
-/* Michroma: CV person's name only (Michroma has a single regular weight) */
 .cv-name {
-  font-family: var(--font-cv-heading);
+  font-family: var(--t-font, var(--font-cv-heading));
   font-size: 1.3rem;
   line-height: 1.25;
   font-weight: 400;
   letter-spacing: 0;
-  color: var(--cv-navy);
+  color: var(--t-name, var(--cv-navy));
 }
 
 .cv-title {
@@ -675,28 +807,44 @@ textarea[aria-invalid="true"] {
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--cv-royal);
+  color: var(--t-title, var(--color-text-muted));
 }
 
+/* Contact (single-column templates: a wrapping row inside the header) */
+.cv-sheet:not([data-template="modern"]) .cv-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 16px;
+  margin-top: 10px;
+  color: #3d4b59;
+}
+
+.cv-contact__item {
+  min-width: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.cv-contact__item a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Sections */
 .cv-main .cv-section {
   margin-top: 20px;
 }
 
-/* Michroma: CV section titles only (single regular weight, wide letterforms).
-   Divider: royal blue fading into soft grey. */
 .cv-section__title {
   margin-bottom: 10px;
   padding-bottom: 4px;
-  font-family: var(--font-cv-heading);
-  font-size: 0.7rem;
+  font-family: var(--t-font, var(--font-cv-heading));
+  font-size: 0.72rem;
   font-weight: 400;
   letter-spacing: 1.2px;
+  line-height: 1.4;
   text-transform: uppercase;
-  color: var(--cv-navy);
-  border-width: 0 0 1px;
-  border-style: solid;
-  border-color: var(--cv-rule);
-  border-image: linear-gradient(to right, var(--cv-royal), var(--cv-rule) 75%) 1;
+  color: var(--t-head, var(--cv-navy));
 }
 
 .cv-summary {
@@ -704,7 +852,7 @@ textarea[aria-invalid="true"] {
   white-space: pre-line;
 }
 
-/* ----- Entries: title left, date right, subtitle and text below ----- */
+/* Entries: title left, date right, subtitle and text below */
 .cv-list {
   display: block;
 }
@@ -742,7 +890,7 @@ textarea[aria-invalid="true"] {
   grid-column: 1 / -1;
   font-size: 0.92rem;
   font-weight: 600;
-  color: var(--cv-royal);
+  color: var(--t-sub, var(--cv-royal));
 }
 
 .cv-item__text {
@@ -756,11 +904,30 @@ textarea[aria-invalid="true"] {
   grid-column: 1 / -1;
   margin-top: 2px;
   font-size: 0.88rem;
-  color: var(--cv-royal);
+  color: var(--t-link, var(--cv-royal));
 }
 
 .cv-item__link a {
   color: inherit;
+}
+
+/* Skills and languages */
+.cv-tag {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.cv-sheet:not([data-template="modern"]) .cv-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+}
+
+.cv-sheet:not([data-template="modern"]) .cv-tag {
+  padding: 2px 10px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: 999px;
 }
 
 /* Placeholder state (shown only while the form is completely empty) */
@@ -773,9 +940,269 @@ textarea[aria-invalid="true"] {
   font-style: italic;
 }
 
-/* ----- Small phones (screen only): stack the layout, name first ----- */
+/* ---------- 11a. Template: Classic Professional ---------- */
+.cv-sheet[data-template="classic"] {
+  --t-name: var(--cv-navy);
+  --t-title: var(--color-text-muted);
+  --t-head: var(--cv-navy);
+  --t-sub: var(--cv-navy);
+  --t-link: var(--cv-navy);
+}
+
+.cv-sheet[data-template="classic"] .cv-header {
+  border-bottom: 2px solid var(--cv-navy);
+}
+
+.cv-sheet[data-template="classic"] .cv-section__title {
+  border-bottom: 1px solid var(--cv-navy);
+}
+
+.cv-sheet[data-template="classic"] .cv-tag {
+  color: var(--cv-navy);
+  background: #ffffff;
+  border-color: #c3ccd9;
+}
+
+/* ---------- 11b. Template: Modern Two-Column ----------
+   Floated sidebar (33.333%) plus a main column offset by the same width.
+   The sidebar gradient is painted by a horizontal gradient on the sheet, so
+   it continues unbroken down every printed page.
+   ---------------------------------------------------------------- */
+.cv-sheet[data-template="modern"] {
+  --t-name: var(--cv-navy);
+  --t-title: var(--cv-royal);
+  --t-head: var(--cv-navy);
+  --t-sub: var(--cv-royal);
+  --t-link: var(--cv-royal);
+  background-image: var(--cv-stripe);
+}
+
+.cv-sheet[data-template="modern"] .cv-sidebar {
+  float: left;
+  width: 33.333%;
+  padding: 32px 18px;
+  color: var(--cv-navy-text);
+}
+
+.cv-sheet[data-template="modern"] .cv-main {
+  margin-left: 33.333%;
+  padding: 32px 26px;
+}
+
+.cv-sheet[data-template="modern"] .cv-sidebar .cv-section {
+  margin-top: 24px;
+}
+
+/* Sidebar headings: section titles plus the "Contact" label */
+.cv-sheet[data-template="modern"] .cv-contact::before,
+.cv-sheet[data-template="modern"] .cv-sidebar .cv-section__title {
+  display: block;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  font-family: var(--font-cv-heading);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 1.2px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: #ffffff;
+  border-width: 0 0 1px;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.35);
+  border-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.6),
+      rgba(255, 255, 255, 0.08)
+    ) 1;
+}
+
+.cv-sheet[data-template="modern"] .cv-contact::before {
+  content: "Contact";
+}
+
+.cv-sheet[data-template="modern"] .cv-contact {
+  display: block;
+}
+
+.cv-sheet[data-template="modern"] .cv-contact__item {
+  margin-top: 6px;
+  color: var(--cv-navy-text);
+}
+
+.cv-sheet[data-template="modern"] .cv-tags {
+  display: block;
+}
+
+.cv-sheet[data-template="modern"] .cv-tag {
+  display: block;
+  margin-top: 6px;
+  padding: 0;
+  font-weight: 400;
+  color: var(--cv-navy-text);
+  background: none;
+  border: 0;
+  border-radius: 0;
+}
+
+/* Header rule under the name: navy fading to royal blue to light grey */
+.cv-sheet[data-template="modern"] .cv-header {
+  border-width: 0 0 2px;
+  border-style: solid;
+  border-color: var(--cv-navy);
+  border-image: linear-gradient(
+      to right,
+      var(--cv-navy-deep),
+      var(--cv-royal) 55%,
+      var(--cv-rule)
+    ) 1;
+}
+
+.cv-sheet[data-template="modern"] .cv-main .cv-section__title {
+  border-width: 0 0 1px;
+  border-style: solid;
+  border-color: var(--cv-rule);
+  border-image: linear-gradient(to right, var(--cv-royal), var(--cv-rule) 75%) 1;
+}
+
+/* ---------- 11c. Template: Minimal ATS-Friendly ----------
+   Plain single column, black on white, system font, no graphics.
+   ---------------------------------------------------------------- */
+.cv-sheet[data-template="ats"] {
+  --t-font: var(--font-cv-plain);
+  --t-name: #000000;
+  --t-title: #333333;
+  --t-head: #000000;
+  --t-sub: #000000;
+  --t-link: #000000;
+  font-family: var(--font-cv-plain);
+  color: #111111;
+}
+
+.cv-sheet[data-template="ats"] .cv-header {
+  border-bottom: 1px solid #000000;
+}
+
+.cv-sheet[data-template="ats"] .cv-name {
+  font-weight: 700;
+}
+
+.cv-sheet[data-template="ats"] .cv-title {
+  letter-spacing: 0.5px;
+}
+
+.cv-sheet[data-template="ats"] .cv-contact {
+  color: #111111;
+}
+
+.cv-sheet[data-template="ats"] .cv-section__title {
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid #000000;
+}
+
+.cv-sheet[data-template="ats"] .cv-item__title {
+  color: #000000;
+}
+
+.cv-sheet[data-template="ats"] .cv-item__date {
+  color: #333333;
+}
+
+.cv-sheet[data-template="ats"] .cv-item__text,
+.cv-sheet[data-template="ats"] .cv-summary {
+  color: #111111;
+}
+
+.cv-sheet[data-template="ats"] .cv-tags {
+  gap: 4px 16px;
+}
+
+.cv-sheet[data-template="ats"] .cv-tag {
+  padding: 0;
+  font-weight: 400;
+  color: #000000;
+  border: 0;
+  border-radius: 0;
+}
+
+/* ---------- 11d. Template: Elegant Green ---------- */
+.cv-sheet[data-template="green"] {
+  --t-name: var(--cv-green-dark);
+  --t-title: var(--cv-green);
+  --t-head: var(--cv-green);
+  --t-sub: var(--cv-green);
+  --t-link: var(--cv-green);
+}
+
+.cv-sheet[data-template="green"] .cv-header {
+  border-bottom: 2px solid var(--cv-green);
+}
+
+.cv-sheet[data-template="green"] .cv-section__title {
+  padding: 1px 0 1px 8px;
+  border-left: 3px solid var(--cv-green);
+}
+
+.cv-sheet[data-template="green"] .cv-tag {
+  color: var(--cv-green-dark);
+  background: var(--cv-green-soft);
+  border-color: var(--cv-green-line);
+}
+
+/* ---------- 11e. Template: Corporate Blue Gradient ---------- */
+.cv-sheet[data-template="gradient"] {
+  --t-name: #ffffff;
+  --t-title: #cfe0f7;
+  --t-head: var(--cv-navy);
+  --t-sub: var(--cv-royal);
+  --t-link: var(--cv-royal);
+}
+
+.cv-sheet[data-template="gradient"] .cv-header {
+  padding: 20px 24px;
+  color: #ffffff;
+  background-color: var(--cv-navy);
+  background-image: linear-gradient(
+    120deg,
+    var(--cv-navy-deep) 0%,
+    var(--cv-navy) 45%,
+    var(--cv-royal) 100%
+  );
+  border-radius: 6px;
+}
+
+.cv-sheet[data-template="gradient"] .cv-contact {
+  margin-top: 12px;
+  padding-top: 10px;
+  color: var(--cv-navy-text);
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.cv-sheet[data-template="gradient"] .cv-section__title {
+  border-width: 0 0 1px;
+  border-style: solid;
+  border-color: var(--cv-rule);
+  border-image: linear-gradient(to right, var(--cv-royal), var(--cv-rule) 75%) 1;
+}
+
+.cv-sheet[data-template="gradient"] .cv-tag {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light);
+  border-color: #c5dcef;
+}
+
+/* ---------- 11f. Small phones (screen only) ---------- */
 @media screen and (max-width: 599px) {
-  .cv-sheet {
+  .cv-main {
+    padding: 20px 16px;
+  }
+
+  .cv-sheet[data-template="gradient"] .cv-header {
+    padding: 16px;
+  }
+
+  /* Modern: stack the layout, name first, navy block below */
+  .cv-sheet[data-template="modern"] {
     display: flex;
     flex-direction: column;
     aspect-ratio: auto;
@@ -783,13 +1210,13 @@ textarea[aria-invalid="true"] {
     background-color: #ffffff;
   }
 
-  .cv-main {
+  .cv-sheet[data-template="modern"] .cv-main {
     order: -1;
     margin-left: 0;
     padding: 20px 16px;
   }
 
-  .cv-sidebar {
+  .cv-sheet[data-template="modern"] .cv-sidebar {
     float: none;
     width: auto;
     padding: 20px 16px;
@@ -911,15 +1338,15 @@ textarea[aria-invalid="true"] {
 }
 
 /* ---------- 16. Print / Save as PDF ----------
-   A4 page. Left/right page margins are 0 so the sidebar runs edge to edge;
-   top/bottom margins give every page breathing room. The same stripe is also
-   painted on <html> so it fills the page margin areas. print-color-adjust
-   asks the browser to print the sidebar colours even if its "background
-   graphics" option is off; a fallback below covers browsers that ignore it.
+   A4 page for every template. Left/right page margins are 0 (the templates
+   add their own side padding) so the Modern sidebar can run edge to edge;
+   top/bottom margins give every page breathing room. print-color-adjust
+   asks the browser to print colours even if its "background graphics"
+   option is off; a fallback below covers browsers that ignore it.
    ---------------------------------------------------------------- */
 @page {
   size: A4;
-  margin: 12mm 0;
+  margin: 15mm 0;
 }
 
 @media print {
@@ -928,7 +1355,8 @@ textarea[aria-invalid="true"] {
     print-color-adjust: exact;
   }
 
-  html {
+  /* Modern: the stripe is also painted on <html> so it fills the page margins */
+  html[data-template="modern"] {
     background-color: #ffffff;
     background-image: var(--cv-stripe);
   }
@@ -942,7 +1370,7 @@ textarea[aria-invalid="true"] {
     overflow: visible;
   }
 
-  /* Hide app interface */
+  /* Hide app interface (template picker, form, buttons, header, footer) */
   .app-header,
   .builder,
   .app-footer,
@@ -983,36 +1411,48 @@ textarea[aria-invalid="true"] {
     line-height: 1.45;
     border-radius: 0;
     box-shadow: none;
-    background-color: #ffffff;
-    background-image: var(--cv-stripe);
   }
 
-  .cv-sidebar {
+  .cv-sheet[data-template="modern"] .cv-sidebar {
     padding: 0 7mm 0 8mm;
   }
 
-  .cv-main {
+  .cv-sheet[data-template="modern"] .cv-main {
     padding: 0 12mm 0 9mm;
   }
 
-  /* Sidebar */
-  .cv-contact::before,
-  .cv-sidebar .cv-section__title {
+  .cv-sheet:not([data-template="modern"]) .cv-main {
+    padding: 0 16mm;
+  }
+
+  /* Modern sidebar */
+  .cv-sheet[data-template="modern"] .cv-contact::before,
+  .cv-sheet[data-template="modern"] .cv-sidebar .cv-section__title {
     font-size: 7.5pt;
     margin-bottom: 3mm;
   }
 
-  .cv-sidebar .cv-section {
+  .cv-sheet[data-template="modern"] .cv-sidebar .cv-section {
     margin-top: 8mm;
   }
 
-  .cv-contact__item,
-  .cv-tag {
+  .cv-sheet[data-template="modern"] .cv-contact__item,
+  .cv-sheet[data-template="modern"] .cv-tag {
     margin-top: 1.8mm;
-    font-size: 9pt;
   }
 
-  /* Main column */
+  /* Gradient header band */
+  .cv-sheet[data-template="gradient"] .cv-header {
+    padding: 6mm 7mm;
+    border-radius: 1.5mm;
+  }
+
+  .cv-sheet[data-template="gradient"] .cv-contact {
+    margin-top: 3mm;
+    padding-top: 2.5mm;
+  }
+
+  /* Shared type scale */
   .cv-name {
     font-size: 19pt;
   }
@@ -1023,6 +1463,11 @@ textarea[aria-invalid="true"] {
 
   .cv-header {
     padding-bottom: 4mm;
+  }
+
+  .cv-contact__item,
+  .cv-tag {
+    font-size: 9pt;
   }
 
   .cv-main .cv-section {
@@ -1044,7 +1489,6 @@ textarea[aria-invalid="true"] {
 
   .cv-item__subtitle {
     font-size: 10pt;
-    color: var(--cv-royal);
   }
 
   .cv-item__date {
@@ -1058,7 +1502,6 @@ textarea[aria-invalid="true"] {
 
   .cv-item__link {
     font-size: 9.5pt;
-    color: var(--cv-royal);
   }
 
   /* Page-break control */
@@ -1093,29 +1536,49 @@ textarea[aria-invalid="true"] {
   }
 
   /* Fallback: only for a browser that cannot force background printing.
-     The sidebar then prints as dark text on white with a thin divider, so
-     the contact, skills and languages stay readable. */
+     The Modern sidebar and the Gradient header then print as dark text on
+     white, so everything stays readable. */
   @supports not ((print-color-adjust: exact) or (-webkit-print-color-adjust: exact)) {
-    html,
-    .cv-sheet {
+    html[data-template="modern"],
+    .cv-sheet[data-template="modern"] {
       background-image: none;
       background-color: #ffffff;
     }
 
-    .cv-sidebar {
+    .cv-sheet[data-template="modern"] .cv-sidebar {
       color: #1f2933;
       border-right: 0.3mm solid var(--cv-rule);
     }
 
-    .cv-contact::before,
-    .cv-sidebar .cv-section__title {
+    .cv-sheet[data-template="modern"] .cv-contact::before,
+    .cv-sheet[data-template="modern"] .cv-sidebar .cv-section__title {
       color: var(--cv-navy);
       border-image: linear-gradient(to right, var(--cv-royal), var(--cv-rule) 75%) 1;
     }
 
-    .cv-contact__item,
-    .cv-tag {
+    .cv-sheet[data-template="modern"] .cv-contact__item,
+    .cv-sheet[data-template="modern"] .cv-tag {
       color: #1f2933;
+    }
+
+    .cv-sheet[data-template="gradient"] .cv-header {
+      background-image: none;
+      background-color: #ffffff;
+      border-bottom: 2px solid var(--cv-navy);
+      border-radius: 0;
+    }
+
+    .cv-sheet[data-template="gradient"] .cv-name {
+      color: var(--cv-navy);
+    }
+
+    .cv-sheet[data-template="gradient"] .cv-title {
+      color: var(--cv-royal);
+    }
+
+    .cv-sheet[data-template="gradient"] .cv-contact {
+      color: #1f2933;
+      border-top-color: var(--cv-rule);
     }
   }
 }
