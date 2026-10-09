@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CVvero - style.css (Version 2: Modern Two-Column CV template)
+   CVvero - style.css (Version 3: Modern Two-Column CV, blue gradient accents)
    Mobile-first, system fonts for the app and CV body text. Michroma is
    loaded from a local file (fonts/Michroma-Regular.woff2) and used ONLY for
    the CV name and CV section titles. Fully offline.
@@ -31,9 +31,20 @@
   --color-disabled-text: #8a97a4;
 
   /* CV template colors */
+  --cv-navy-deep: #0d2043;
   --cv-navy: #13294b;
+  --cv-royal: #1e4a9a;
   --cv-navy-text: #e8eef6;
   --cv-rule: #cfd8e3;
+
+  /* Sidebar stripe: navy to muted royal blue, left to right (page-safe), then white. */
+  --cv-stripe: linear-gradient(
+    to right,
+    var(--cv-navy-deep) 0,
+    var(--cv-royal) 33.333%,
+    #ffffff 33.333%,
+    #ffffff 100%
+  );
 
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-cv: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -524,9 +535,10 @@ textarea[aria-invalid="true"] {
 }
 
 /* ---------- 11. CV sheet: modern two-column template ----------
-   Layout: a floated navy sidebar (33.333% wide) plus a main column that is
-   offset by the same width. The navy stripe is painted by a gradient on the
-   sheet itself, so it continues down every page of a multi-page CV.
+   Layout: a floated sidebar (33.333% wide) plus a main column offset by the
+   same width. The sidebar gradient is painted by a horizontal gradient on the
+   sheet itself (--cv-stripe), so it continues unbroken down every page.
+   The main column stays white.
    ---------------------------------------------------------------- */
 .cv-sheet {
   display: flow-root;
@@ -538,13 +550,8 @@ textarea[aria-invalid="true"] {
   font-size: 0.9rem;
   line-height: 1.5;
   color: #1f2933;
-  background: linear-gradient(
-    to right,
-    var(--cv-navy) 0,
-    var(--cv-navy) 33.333%,
-    #ffffff 33.333%,
-    #ffffff 100%
-  );
+  background-color: #ffffff;
+  background-image: var(--cv-stripe);
   aspect-ratio: 210 / 297; /* A4-like proportions on screen; grows with content */
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-md);
@@ -569,7 +576,8 @@ textarea[aria-invalid="true"] {
   margin-top: 24px;
 }
 
-/* Sidebar headings: real section titles plus the "Contact" label */
+/* Sidebar headings: real section titles plus the "Contact" label.
+   The divider fades out softly (border-image, so it prints as a border). */
 .cv-contact::before,
 .cv-sidebar .cv-section__title {
   display: block;
@@ -582,7 +590,14 @@ textarea[aria-invalid="true"] {
   line-height: 1.4;
   text-transform: uppercase;
   color: #ffffff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-width: 0 0 1px;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.35);
+  border-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.6),
+      rgba(255, 255, 255, 0.08)
+    ) 1;
 }
 
 .cv-contact::before {
@@ -624,15 +639,24 @@ textarea[aria-invalid="true"] {
   border-radius: 0;
 }
 
-/* ----- Main column ----- */
+/* ----- Main column (white) ----- */
 .cv-main {
   margin-left: 33.333%;
   padding: 32px 26px;
 }
 
+/* Header rule under the name: navy fading to royal blue to light grey */
 .cv-header {
   padding-bottom: 14px;
-  border-bottom: 2px solid var(--cv-navy);
+  border-width: 0 0 2px;
+  border-style: solid;
+  border-color: var(--cv-navy);
+  border-image: linear-gradient(
+      to right,
+      var(--cv-navy-deep),
+      var(--cv-royal) 55%,
+      var(--cv-rule)
+    ) 1;
 }
 
 /* Michroma: CV person's name only (Michroma has a single regular weight) */
@@ -651,14 +675,15 @@ textarea[aria-invalid="true"] {
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--cv-royal);
 }
 
 .cv-main .cv-section {
   margin-top: 20px;
 }
 
-/* Michroma: CV section titles only (single regular weight, wide letterforms) */
+/* Michroma: CV section titles only (single regular weight, wide letterforms).
+   Divider: royal blue fading into soft grey. */
 .cv-section__title {
   margin-bottom: 10px;
   padding-bottom: 4px;
@@ -668,7 +693,10 @@ textarea[aria-invalid="true"] {
   letter-spacing: 1.2px;
   text-transform: uppercase;
   color: var(--cv-navy);
-  border-bottom: 1px solid var(--cv-rule);
+  border-width: 0 0 1px;
+  border-style: solid;
+  border-color: var(--cv-rule);
+  border-image: linear-gradient(to right, var(--cv-royal), var(--cv-rule) 75%) 1;
 }
 
 .cv-summary {
@@ -714,7 +742,7 @@ textarea[aria-invalid="true"] {
   grid-column: 1 / -1;
   font-size: 0.92rem;
   font-weight: 600;
-  color: var(--color-primary);
+  color: var(--cv-royal);
 }
 
 .cv-item__text {
@@ -728,7 +756,7 @@ textarea[aria-invalid="true"] {
   grid-column: 1 / -1;
   margin-top: 2px;
   font-size: 0.88rem;
-  color: var(--color-primary);
+  color: var(--cv-royal);
 }
 
 .cv-item__link a {
@@ -751,7 +779,8 @@ textarea[aria-invalid="true"] {
     display: flex;
     flex-direction: column;
     aspect-ratio: auto;
-    background: #ffffff;
+    background-image: none;
+    background-color: #ffffff;
   }
 
   .cv-main {
@@ -764,7 +793,7 @@ textarea[aria-invalid="true"] {
     float: none;
     width: auto;
     padding: 20px 16px;
-    background: var(--cv-navy);
+    background: linear-gradient(135deg, var(--cv-navy-deep), var(--cv-royal));
   }
 }
 
@@ -882,9 +911,11 @@ textarea[aria-invalid="true"] {
 }
 
 /* ---------- 16. Print / Save as PDF ----------
-   A4 page. Left/right page margins are 0 so the navy sidebar runs edge to
-   edge; top/bottom margins give every page breathing room. The same navy
-   stripe is also painted on <html> so it fills the page margin areas.
+   A4 page. Left/right page margins are 0 so the sidebar runs edge to edge;
+   top/bottom margins give every page breathing room. The same stripe is also
+   painted on <html> so it fills the page margin areas. print-color-adjust
+   asks the browser to print the sidebar colours even if its "background
+   graphics" option is off; a fallback below covers browsers that ignore it.
    ---------------------------------------------------------------- */
 @page {
   size: A4;
@@ -898,13 +929,8 @@ textarea[aria-invalid="true"] {
   }
 
   html {
-    background: linear-gradient(
-      to right,
-      var(--cv-navy) 0,
-      var(--cv-navy) 33.333%,
-      #ffffff 33.333%,
-      #ffffff 100%
-    );
+    background-color: #ffffff;
+    background-image: var(--cv-stripe);
   }
 
   body {
@@ -957,13 +983,8 @@ textarea[aria-invalid="true"] {
     line-height: 1.45;
     border-radius: 0;
     box-shadow: none;
-    background: linear-gradient(
-      to right,
-      var(--cv-navy) 0,
-      var(--cv-navy) 33.333%,
-      #ffffff 33.333%,
-      #ffffff 100%
-    );
+    background-color: #ffffff;
+    background-image: var(--cv-stripe);
   }
 
   .cv-sidebar {
@@ -1023,7 +1044,7 @@ textarea[aria-invalid="true"] {
 
   .cv-item__subtitle {
     font-size: 10pt;
-    color: var(--cv-navy);
+    color: var(--cv-royal);
   }
 
   .cv-item__date {
@@ -1037,7 +1058,7 @@ textarea[aria-invalid="true"] {
 
   .cv-item__link {
     font-size: 9.5pt;
-    color: var(--cv-navy);
+    color: var(--cv-royal);
   }
 
   /* Page-break control */
@@ -1069,5 +1090,32 @@ textarea[aria-invalid="true"] {
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  /* Fallback: only for a browser that cannot force background printing.
+     The sidebar then prints as dark text on white with a thin divider, so
+     the contact, skills and languages stay readable. */
+  @supports not ((print-color-adjust: exact) or (-webkit-print-color-adjust: exact)) {
+    html,
+    .cv-sheet {
+      background-image: none;
+      background-color: #ffffff;
+    }
+
+    .cv-sidebar {
+      color: #1f2933;
+      border-right: 0.3mm solid var(--cv-rule);
+    }
+
+    .cv-contact::before,
+    .cv-sidebar .cv-section__title {
+      color: var(--cv-navy);
+      border-image: linear-gradient(to right, var(--cv-royal), var(--cv-rule) 75%) 1;
+    }
+
+    .cv-contact__item,
+    .cv-tag {
+      color: #1f2933;
+    }
   }
 }
