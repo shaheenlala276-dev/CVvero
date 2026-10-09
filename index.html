@@ -281,9 +281,9 @@
       <div class="preview__sheet-wrapper" id="previewWrapper">
         <article class="cv-sheet" id="cvPreview" aria-live="polite">
 
-          <header class="cv-header" id="cvHeader">
-            <h3 class="cv-name" id="previewFullName">Your Name</h3>
-            <p class="cv-title" id="previewProfessionalTitle">Professional Title</p>
+          <!-- Sidebar: contact, skills, languages -->
+          <aside class="cv-sidebar" id="cvSidebar">
+
             <ul class="cv-contact" id="previewContact">
               <li class="cv-contact__item" id="previewPhone">Phone Number</li>
               <li class="cv-contact__item" id="previewEmail">Email Address</li>
@@ -291,72 +291,83 @@
               <li class="cv-contact__item" id="previewLinkedin">LinkedIn</li>
               <li class="cv-contact__item" id="previewWebsite">Website</li>
             </ul>
-          </header>
 
-          <section class="cv-section" id="previewSummarySection" aria-labelledby="previewSummaryHeading">
-            <h4 class="cv-section__title" id="previewSummaryHeading">Professional Summary</h4>
-            <p class="cv-summary" id="previewSummary">Your professional summary will appear here.</p>
-          </section>
+            <section class="cv-section" id="previewSkillsSection" aria-labelledby="previewSkillsHeading">
+              <h4 class="cv-section__title" id="previewSkillsHeading">Skills</h4>
+              <ul class="cv-tags" id="previewSkillsList">
+                <li class="cv-tag cv-tag--placeholder">Skill (Level)</li>
+              </ul>
+            </section>
 
-          <section class="cv-section" id="previewExperienceSection" aria-labelledby="previewExperienceHeading">
-            <h4 class="cv-section__title" id="previewExperienceHeading">Work Experience</h4>
-            <div class="cv-list" id="previewExperienceList">
-              <article class="cv-item cv-item--placeholder">
-                <h5 class="cv-item__title">Job Title</h5>
-                <p class="cv-item__subtitle">Company</p>
-                <p class="cv-item__date">Start Date - End Date</p>
-                <p class="cv-item__text">Description of your responsibilities and achievements.</p>
-              </article>
-            </div>
-          </section>
+            <section class="cv-section" id="previewLanguagesSection" aria-labelledby="previewLanguagesHeading">
+              <h4 class="cv-section__title" id="previewLanguagesHeading">Languages</h4>
+              <ul class="cv-tags" id="previewLanguagesList">
+                <li class="cv-tag cv-tag--placeholder">Language (Proficiency)</li>
+              </ul>
+            </section>
 
-          <section class="cv-section" id="previewEducationSection" aria-labelledby="previewEducationHeading">
-            <h4 class="cv-section__title" id="previewEducationHeading">Education</h4>
-            <div class="cv-list" id="previewEducationList">
-              <article class="cv-item cv-item--placeholder">
-                <h5 class="cv-item__title">Degree</h5>
-                <p class="cv-item__subtitle">Institution</p>
-                <p class="cv-item__date">Start Year - End Year</p>
-                <p class="cv-item__text">Description of your studies.</p>
-              </article>
-            </div>
-          </section>
+          </aside>
 
-          <section class="cv-section" id="previewSkillsSection" aria-labelledby="previewSkillsHeading">
-            <h4 class="cv-section__title" id="previewSkillsHeading">Skills</h4>
-            <ul class="cv-tags" id="previewSkillsList">
-              <li class="cv-tag cv-tag--placeholder">Skill (Level)</li>
-            </ul>
-          </section>
+          <!-- Main area: name, title, summary, experience, education, projects, certifications -->
+          <div class="cv-main" id="cvMain">
 
-          <section class="cv-section" id="previewLanguagesSection" aria-labelledby="previewLanguagesHeading">
-            <h4 class="cv-section__title" id="previewLanguagesHeading">Languages</h4>
-            <ul class="cv-tags" id="previewLanguagesList">
-              <li class="cv-tag cv-tag--placeholder">Language (Proficiency)</li>
-            </ul>
-          </section>
+            <header class="cv-header" id="cvHeader">
+              <h3 class="cv-name" id="previewFullName">Your Name</h3>
+              <p class="cv-title" id="previewProfessionalTitle">Professional Title</p>
+            </header>
 
-          <section class="cv-section" id="previewProjectsSection" aria-labelledby="previewProjectsHeading">
-            <h4 class="cv-section__title" id="previewProjectsHeading">Projects</h4>
-            <div class="cv-list" id="previewProjectsList">
-              <article class="cv-item cv-item--placeholder">
-                <h5 class="cv-item__title">Project Name</h5>
-                <p class="cv-item__text">Project description.</p>
-                <p class="cv-item__link">Project Link</p>
-              </article>
-            </div>
-          </section>
+            <section class="cv-section" id="previewSummarySection" aria-labelledby="previewSummaryHeading">
+              <h4 class="cv-section__title" id="previewSummaryHeading">Professional Summary</h4>
+              <p class="cv-summary" id="previewSummary">Your professional summary will appear here.</p>
+            </section>
 
-          <section class="cv-section" id="previewCertificationsSection" aria-labelledby="previewCertificationsHeading">
-            <h4 class="cv-section__title" id="previewCertificationsHeading">Certifications</h4>
-            <div class="cv-list" id="previewCertificationsList">
-              <article class="cv-item cv-item--placeholder">
-                <h5 class="cv-item__title">Certification Name</h5>
-                <p class="cv-item__subtitle">Issuing Organization</p>
-                <p class="cv-item__date">Year</p>
-              </article>
-            </div>
-          </section>
+            <section class="cv-section" id="previewExperienceSection" aria-labelledby="previewExperienceHeading">
+              <h4 class="cv-section__title" id="previewExperienceHeading">Work Experience</h4>
+              <div class="cv-list" id="previewExperienceList">
+                <article class="cv-item cv-item--placeholder">
+                  <h5 class="cv-item__title">Job Title</h5>
+                  <p class="cv-item__subtitle">Company</p>
+                  <p class="cv-item__date">Start Date - End Date</p>
+                  <p class="cv-item__text">Description of your responsibilities and achievements.</p>
+                </article>
+              </div>
+            </section>
+
+            <section class="cv-section" id="previewEducationSection" aria-labelledby="previewEducationHeading">
+              <h4 class="cv-section__title" id="previewEducationHeading">Education</h4>
+              <div class="cv-list" id="previewEducationList">
+                <article class="cv-item cv-item--placeholder">
+                  <h5 class="cv-item__title">Degree</h5>
+                  <p class="cv-item__subtitle">Institution</p>
+                  <p class="cv-item__date">Start Year - End Year</p>
+                  <p class="cv-item__text">Description of your studies.</p>
+                </article>
+              </div>
+            </section>
+
+            <section class="cv-section" id="previewProjectsSection" aria-labelledby="previewProjectsHeading">
+              <h4 class="cv-section__title" id="previewProjectsHeading">Projects</h4>
+              <div class="cv-list" id="previewProjectsList">
+                <article class="cv-item cv-item--placeholder">
+                  <h5 class="cv-item__title">Project Name</h5>
+                  <p class="cv-item__text">Project description.</p>
+                  <p class="cv-item__link">Project Link</p>
+                </article>
+              </div>
+            </section>
+
+            <section class="cv-section" id="previewCertificationsSection" aria-labelledby="previewCertificationsHeading">
+              <h4 class="cv-section__title" id="previewCertificationsHeading">Certifications</h4>
+              <div class="cv-list" id="previewCertificationsList">
+                <article class="cv-item cv-item--placeholder">
+                  <h5 class="cv-item__title">Certification Name</h5>
+                  <p class="cv-item__subtitle">Issuing Organization</p>
+                  <p class="cv-item__date">Year</p>
+                </article>
+              </div>
+            </section>
+
+          </div>
 
         </article>
       </div>
