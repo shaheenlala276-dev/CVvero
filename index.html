@@ -328,6 +328,12 @@
     <section class="preview" id="previewSection" aria-labelledby="previewHeading">
       <h2 class="preview__heading" id="previewHeading">CV Preview</h2>
 
+      <!-- Save as PDF (screen only; hidden when printing) -->
+      <div class="preview__toolbar" id="previewToolbar">
+        <button type="button" class="btn btn--primary" id="savePdfBtn">Save as PDF</button>
+        <p class="pdf-status" id="pdfStatus" role="status" aria-live="polite" hidden></p>
+      </div>
+
       <div class="preview__sheet-wrapper" id="previewWrapper">
         <article class="cv-sheet" id="cvPreview" data-template="modern" aria-live="polite">
 
