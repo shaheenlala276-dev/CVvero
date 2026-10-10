@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CVvero - style.css (Version 4: five selectable CV templates)
+   CVvero - style.css (Version 5: five CV templates + Save as PDF toolbar)
    Mobile-first, system fonts for the app and CV body text. Michroma is
    loaded from a local file (fonts/Michroma-Regular.woff2) and used for the
    CV name and CV section titles (all templates except Minimal ATS-Friendly,
@@ -754,6 +754,34 @@ textarea[aria-invalid="true"] {
   overflow-x: auto;
 }
 
+/* ---------- 10a. Save as PDF toolbar (above the CV preview, screen only) ---------- */
+.preview__toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.preview__toolbar .btn {
+  width: 100%;
+}
+
+.pdf-status {
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light);
+  border: 1px solid #c5dcef;
+  border-radius: var(--radius-sm);
+}
+
+.pdf-status--error {
+  color: var(--color-danger);
+  background: var(--color-danger-light);
+  border-color: #efc2bd;
+}
+
 /* ---------- 11. CV sheet: shared base (all templates) ---------- */
 .cv-sheet {
   display: flow-root;
@@ -1264,6 +1292,11 @@ textarea[aria-invalid="true"] {
     width: auto;
   }
 
+  .preview__toolbar .btn {
+    width: auto;
+    align-self: flex-start;
+  }
+
   .preview__sheet-wrapper {
     padding: var(--space-4);
   }
@@ -1370,11 +1403,13 @@ textarea[aria-invalid="true"] {
     overflow: visible;
   }
 
-  /* Hide app interface (template picker, form, buttons, header, footer) */
+  /* Hide app interface (template picker, form, buttons, PDF toolbar, header, footer) */
   .app-header,
   .builder,
   .app-footer,
-  .preview__heading {
+  .preview__heading,
+  .preview__toolbar,
+  .pdf-status {
     display: none !important;
   }
 
