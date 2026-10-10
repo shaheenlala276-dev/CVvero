@@ -1,6 +1,5 @@
-
 /* ==========================================================================
-   CVvero - script.js (Version 1)
+   CVvero - script.js (Version 2: template selection)
    Works with the existing index.html and style.css. No external resources,
    fully offline. Data is auto-saved in the browser using localStorage only.
    ========================================================================== */
@@ -12,7 +11,13 @@
      1. Constants & configuration
      ------------------------------------------------------------------------ */
   const STORAGE_KEY = 'cvvero_v1_data';
+  const TEMPLATE_STORAGE_KEY = 'cvvero_v1_template';
   const SAVE_DELAY_MS = 300;
+
+  /* Available CV templates (must match the radio values in index.html and the
+     data-template selectors in style.css). */
+  const TEMPLATES = ['classic', 'modern', 'ats', 'green', 'gradient'];
+  const DEFAULT_TEMPLATE = 'modern';
 
   const MONTH_NAMES = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -108,7 +113,8 @@
     placeholderNodes: {},    // original preview placeholder nodes per section type
     defaultTexts: {},        // original preview texts by element id
     saveTimer: null,
-    errorCounter: 0
+    errorCounter: 0,
+    template: DEFAULT_TEMPLATE
   };
 
   /* ------------------------------------------------------------------------
@@ -852,7 +858,85 @@
   }
 
   /* ------------------------------------------------------------------------
-     12. Initialization
+     12. CV templates
+     The template choice is stored separately from the CV data, so switching
+     templates never touches the form, and Clear Form keeps the chosen design.
+     ------------------------------------------------------------------------ */
+  function isValidTemplate(value) {
+    return TEMPLATES.indexOf(value) !== -1;
+  }
+
+  function loadSavedTemplate() {
+    try {
+      const saved = window.localStorage.getItem(TEMPLATE_STORAGE_KEY);
+      return isValidTemplate(saved) ? saved : DEFAULT_TEMPLATE;
+    } catch (error) {
+      return DEFAULT_TEMPLATE;
+    }
+  }
+
+  function saveTemplate(template) {
+    try {
+      window.localStorage.setItem(TEMPLATE_STORAGE_KEY, template);
+    } catch (error) {
+      // Storage may be unavailable. The app keeps working.
+    }
+  }
+
+  /* Moves the existing preview blocks (by ID, nothing is recreated):
+     - Modern: contact, skills and languages live in the sidebar.
+     - Others: contact sits inside the header; skills and languages flow in the
+       main column after Education and before Projects. */
+  function arrangePreviewLayout(template) {
+    const sidebar = byId('cvSidebar');
+    const main = byId('cvMain');
+    const header = byId('cvHeader');
+    const contact = byId('previewContact');
+    const skills = byId('previewSkillsSection');
+    const languages = byId('previewLanguagesSection');
+    const projects = byId('previewProjectsSection');
+    if (!sidebar || !main || !header || !contact || !skills || !languages || !projects) return;
+
+    if (template === 'modern') {
+      sidebar.append(contact, skills, languages);
+    } else {
+      header.appendChild(contact);
+      main.insertBefore(skills, projects);
+      main.insertBefore(languages, projects);
+    }
+  }
+
+  function applyTemplate(template, persist) {
+    const id = isValidTemplate(template) ? template : DEFAULT_TEMPLATE;
+    state.template = id;
+
+    const sheet = byId('cvPreview');
+    if (sheet) sheet.setAttribute('data-template', id);
+    document.documentElement.setAttribute('data-template', id);
+
+    arrangePreviewLayout(id);
+
+    document.querySelectorAll('input[name="cvTemplate"]').forEach((radio) => {
+      radio.checked = radio.value === id;
+    });
+
+    if (persist) saveTemplate(id);
+  }
+
+  function handleTemplateChange(event) {
+    const radio = event.target;
+    if (!radio.matches || !radio.matches('input[name="cvTemplate"]') || !radio.checked) return;
+    applyTemplate(radio.value, true);
+  }
+
+  function initTemplates() {
+    applyTemplate(loadSavedTemplate(), false);
+    const grid = byId('templateGrid');
+    if (grid) grid.addEventListener('change', handleTemplateChange);
+  }
+
+  /* ------------------------------------------------------------------------
+     13. Initialization
      ------------------------------------------------------------------------ */
   function init() {
     state.form = byId('cvForm');
@@ -866,6 +950,7 @@
     loadData();
     Object.keys(SECTIONS).forEach(renumberEntries);
 
+    initTemplates();
     bindEvents();
     initNavigation();
     renderPreview();
