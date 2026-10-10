@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CVvero - script.js (Version 2: template selection)
+   CVvero - script.js (Version 3: template selection + Save as PDF)
    Works with the existing index.html and style.css. No external resources,
    fully offline. Data is auto-saved in the browser using localStorage only.
    ========================================================================== */
@@ -18,6 +18,10 @@
      data-template selectors in style.css). */
   const TEMPLATES = ['classic', 'modern', 'ats', 'green', 'gradient'];
   const DEFAULT_TEMPLATE = 'modern';
+
+  /* PDF export */
+  const PDF_FALLBACK_NAME = 'My_CV';
+  const PDF_TITLE_RESTORE_MS = 60000;
 
   const MONTH_NAMES = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -114,7 +118,11 @@
     defaultTexts: {},        // original preview texts by element id
     saveTimer: null,
     errorCounter: 0,
-    template: DEFAULT_TEMPLATE
+    template: DEFAULT_TEMPLATE,
+    originalTitle: '',       // page title to restore after a PDF export
+    pdfPending: false,       // true while the print window for a PDF export is open
+    pdfFileName: '',         // file name (without .pdf) used for the current export
+    titleTimer: null
   };
 
   /* ------------------------------------------------------------------------
@@ -936,7 +944,119 @@
   }
 
   /* ------------------------------------------------------------------------
-     13. Initialization
+     13. Save as PDF (the browser's own print-to-PDF)
+     The page cannot see what happens inside the print window, so it never
+     claims that a file was saved. It only explains the steps and, when the
+     print window closes, tells the user what to check.
+     ------------------------------------------------------------------------ */
+
+  /* Safe file name from the user's name, e.g. "Ayesha Khan" -> "Ayesha_Khan_CV".
+     Chrome uses the page title as the default PDF file name. */
+  function buildPdfFileName() {
+    const nameField = byId('fullName');
+    const raw = nameField ? nameField.value.trim() : '';
+    let cleaned;
+    try {
+      cleaned = raw.replace(new RegExp('[^\\p{L}\\p{N}]+', 'gu'), '_');
+    } catch (error) {
+      cleaned = raw.replace(/[^A-Za-z0-9]+/g, '_');
+    }
+    cleaned = cleaned.replace(/^_+|_+$/g, '').slice(0, 50).replace(/_+$/g, '');
+    return cleaned ? cleaned + '_CV' : PDF_FALLBACK_NAME;
+  }
+
+  function setPdfStatus(message, isError) {
+    const element = byId('pdfStatus');
+    if (!element) return;
+    element.textContent = message;
+    element.classList.toggle('pdf-status--error', Boolean(isError));
+    element.hidden = !message;
+  }
+
+  function restorePageTitle() {
+    window.clearTimeout(state.titleTimer);
+    if (state.pdfPending) {
+      state.pdfPending = false;
+      document.title = state.originalTitle;
+    }
+  }
+
+  function openPrintWindow() {
+    try {
+      window.print();
+    } catch (error) {
+      restorePageTitle();
+      setPdfStatus(
+        'The print window could not be opened. Please try again, or open CVvero in Chrome.',
+        true
+      );
+    }
+  }
+
+  function handleSavePdfClick() {
+    setPdfStatus('', false);
+
+    // Same checks as "Preview CV": fix highlighted fields before exporting.
+    const firstInvalid = validateForm();
+    renderPreview();
+    flushSave();
+
+    if (firstInvalid) {
+      setPdfStatus('Please fix the highlighted fields before saving your CV as a PDF.', true);
+      firstInvalid.focus();
+      return;
+    }
+
+    if (typeof window.print !== 'function') {
+      setPdfStatus(
+        'This browser cannot open the print window. Please open CVvero in Chrome and try again.',
+        true
+      );
+      return;
+    }
+
+    window.clearTimeout(state.titleTimer);
+    state.pdfFileName = buildPdfFileName();
+    state.pdfPending = true;
+    document.title = state.pdfFileName;
+    state.titleTimer = window.setTimeout(restorePageTitle, PDF_TITLE_RESTORE_MS);
+
+    setPdfStatus(
+      'Opening the print window\u2026 In it, choose \u201CSave as PDF\u201D as the printer, ' +
+      'then tap the PDF or Download button to save your CV.',
+      false
+    );
+
+    // Wait for fonts so the PDF uses the same fonts as the preview.
+    const start = () => window.setTimeout(openPrintWindow, 80);
+    if (document.fonts && document.fonts.ready && typeof document.fonts.ready.then === 'function') {
+      document.fonts.ready.then(start, start);
+    } else {
+      start();
+    }
+  }
+
+  function handleAfterPrint() {
+    if (!state.pdfPending) return;
+    const fileName = state.pdfFileName || PDF_FALLBACK_NAME;
+    restorePageTitle();
+    setPdfStatus(
+      'The print window was closed. If you chose Save as PDF and saved it, your file is named \u201C' +
+      fileName + '.pdf\u201D and is in your browser\u2019s download location (usually the ' +
+      'Downloads folder). If you did not save it, tap Save as PDF to try again.',
+      false
+    );
+  }
+
+  function initPdfExport() {
+    state.originalTitle = document.title;
+    const button = byId('savePdfBtn');
+    if (button) button.addEventListener('click', handleSavePdfClick);
+    window.addEventListener('afterprint', handleAfterPrint);
+  }
+
+  /* ------------------------------------------------------------------------
+     14. Initialization
      ------------------------------------------------------------------------ */
   function init() {
     state.form = byId('cvForm');
@@ -953,6 +1073,7 @@
     initTemplates();
     bindEvents();
     initNavigation();
+    initPdfExport();
     renderPreview();
   }
 
