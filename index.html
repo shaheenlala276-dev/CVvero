@@ -46,6 +46,8 @@
       <!-- Template picker (outside the form, so it never touches form data) -->
       <section class="card template-section" id="templateSection" aria-labelledby="templateHeading">
         <h3 class="card__title" id="templateHeading">Choose Template</h3>
+
+        <h4 class="template-group-title" id="freeTemplatesHeading">Free Templates</h4>
         <div class="template-grid" id="templateGrid" role="radiogroup" aria-labelledby="templateHeading">
 
           <label class="template-card">
@@ -89,6 +91,62 @@
           </label>
 
         </div>
+
+        <h4 class="template-group-title template-group-title--premium" id="premiumTemplatesHeading">Premium Templates</h4>
+        <div class="template-grid template-grid--premium" id="premiumTemplateGrid" role="radiogroup" aria-labelledby="premiumTemplatesHeading">
+
+          <label class="template-card template-card--premium">
+            <input type="radio" class="template-card__input" name="cvTemplate" value="executive">
+            <span class="template-card__body">
+              <span class="premium-badge">
+                <svg class="premium-badge__icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 7l4.5 4L12 4l4.5 7L21 7l-2 11H5L3 7zm2 13h14v2H5z"/></svg>
+                PREMIUM
+              </span>
+              <span class="tpl-thumb tpl-thumb--executive" aria-hidden="true"></span>
+              <span class="template-card__name">Executive Elite</span>
+              <span class="template-card__desc">Navy and gold for senior and leadership roles.</span>
+              <span class="template-card__lock">Locked &ndash; preview only</span>
+            </span>
+          </label>
+
+          <label class="template-card template-card--premium">
+            <input type="radio" class="template-card__input" name="cvTemplate" value="professional">
+            <span class="template-card__body">
+              <span class="premium-badge">
+                <svg class="premium-badge__icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 7l4.5 4L12 4l4.5 7L21 7l-2 11H5L3 7zm2 13h14v2H5z"/></svg>
+                PREMIUM
+              </span>
+              <span class="tpl-thumb tpl-thumb--professional" aria-hidden="true"></span>
+              <span class="template-card__name">Modern Professional</span>
+              <span class="template-card__desc">Clean blue and white with a crisp accent bar.</span>
+              <span class="template-card__lock">Locked &ndash; preview only</span>
+            </span>
+          </label>
+
+          <label class="template-card template-card--premium">
+            <input type="radio" class="template-card__input" name="cvTemplate" value="creative">
+            <span class="template-card__body">
+              <span class="premium-badge">
+                <svg class="premium-badge__icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 7l4.5 4L12 4l4.5 7L21 7l-2 11H5L3 7zm2 13h14v2H5z"/></svg>
+                PREMIUM
+              </span>
+              <span class="tpl-thumb tpl-thumb--creative" aria-hidden="true"></span>
+              <span class="template-card__name">Elegant Creative</span>
+              <span class="template-card__desc">Emerald and charcoal for design and creative roles.</span>
+              <span class="template-card__lock">Locked &ndash; preview only</span>
+            </span>
+          </label>
+
+        </div>
+
+        <p class="premium-notice" id="premiumNotice" role="status" aria-live="polite" hidden></p>
+
+        <details class="premium-info" id="premiumInfo">
+          <summary>How Premium access works</summary>
+          <p>Premium templates are locked on this page so you can preview them before they are available. No payment is collected in this version of CVvero.</p>
+          <p>CVvero is a static website, so any lock that runs in your browser (a password, a saved flag or a hidden button) can be bypassed by someone who edits the page. It is a convenience, not a secure way to check payment. Reliable payment verification needs a trusted backend or a payment provider that confirms purchases on a server.</p>
+        </details>
+
         <a class="btn btn--secondary template-section__link" href="#previewSection">View Preview</a>
       </section>
 
