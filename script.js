@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CVvero - script.js (Version 3: template selection + Save as PDF)
+   CVvero - script.js (Version 4: template selection + Save as PDF + premium templates)
    Works with the existing index.html and style.css. No external resources,
    fully offline. Data is auto-saved in the browser using localStorage only.
    ========================================================================== */
@@ -16,8 +16,35 @@
 
   /* Available CV templates (must match the radio values in index.html and the
      data-template selectors in style.css). */
-  const TEMPLATES = ['classic', 'modern', 'ats', 'green', 'gradient'];
+  const FREE_TEMPLATES = ['classic', 'modern', 'ats', 'green', 'gradient'];
+  const PREMIUM_TEMPLATES = ['executive', 'professional', 'creative'];
+  const TEMPLATES = FREE_TEMPLATES.concat(PREMIUM_TEMPLATES);
   const DEFAULT_TEMPLATE = 'modern';
+
+  /* ----- Premium access -----
+     IMPORTANT: this is NOT a secure payment check. CVvero is a static website,
+     so everything here runs in the visitor's browser and can be changed by
+     anyone who edits the page. A password, a localStorage flag or a hidden
+     button would only look like a lock. Reliable payment verification needs a
+     trusted backend or a payment provider that confirms purchases on a server.
+
+     Until such a service exists, no payment is collected and premium templates
+     stay locked: they can be previewed, but Save as PDF is blocked and the
+     preview carries a "PREMIUM PREVIEW" mark. The site owner can set the value
+     below to true to unlock them for everyone (for example when the premium
+     templates are released for free, or after a real server-side check has
+     been added). */
+  const PREMIUM_UNLOCKED = false;
+
+  const PREMIUM_NOTICE_TEXT =
+    'PREMIUM template: preview only. Saving it as a PDF is locked, and paid unlocking ' +
+    'is not available in this version yet. The five free templates can be saved as PDF.';
+  const PREMIUM_LOCK_MESSAGE =
+    'This is a PREMIUM template. You can preview it, but saving it as a PDF needs Premium ' +
+    'access, which is not available to buy in this version of CVvero yet. Choose one of the ' +
+    'five free templates to save your CV now.';
+  const LOCK_LABEL_LOCKED = 'Locked \u2013 preview only';
+  const LOCK_LABEL_UNLOCKED = 'Unlocked';
 
   /* PDF export */
   const PDF_FALLBACK_NAME = 'My_CV';
@@ -869,9 +896,20 @@
      12. CV templates
      The template choice is stored separately from the CV data, so switching
      templates never touches the form, and Clear Form keeps the chosen design.
+     Free and premium templates share the same radio group, preview and print
+     path; premium ones are only additionally marked as locked (see section 1).
      ------------------------------------------------------------------------ */
   function isValidTemplate(value) {
     return TEMPLATES.indexOf(value) !== -1;
+  }
+
+  function isPremiumTemplate(value) {
+    return PREMIUM_TEMPLATES.indexOf(value) !== -1;
+  }
+
+  /* A template is locked when it is premium and premium access is not unlocked. */
+  function isTemplateLocked(value) {
+    return isPremiumTemplate(value) && !PREMIUM_UNLOCKED;
   }
 
   function loadSavedTemplate() {
@@ -914,12 +952,36 @@
     }
   }
 
+  /* Shows or hides the premium notice under the template cards. */
+  function updatePremiumNotice(template) {
+    const notice = byId('premiumNotice');
+    if (!notice) return;
+    if (isTemplateLocked(template)) {
+      notice.textContent = PREMIUM_NOTICE_TEXT;
+      notice.hidden = false;
+    } else {
+      notice.textContent = '';
+      notice.hidden = true;
+    }
+  }
+
+  /* Sets the small status line on each premium card. */
+  function updatePremiumLabels() {
+    const label = PREMIUM_UNLOCKED ? LOCK_LABEL_UNLOCKED : LOCK_LABEL_LOCKED;
+    document.querySelectorAll('.template-card__lock').forEach((element) => {
+      element.textContent = label;
+    });
+  }
+
   function applyTemplate(template, persist) {
     const id = isValidTemplate(template) ? template : DEFAULT_TEMPLATE;
     state.template = id;
 
     const sheet = byId('cvPreview');
-    if (sheet) sheet.setAttribute('data-template', id);
+    if (sheet) {
+      sheet.setAttribute('data-template', id);
+      sheet.setAttribute('data-locked', isTemplateLocked(id) ? 'true' : 'false');
+    }
     document.documentElement.setAttribute('data-template', id);
 
     arrangePreviewLayout(id);
@@ -927,6 +989,8 @@
     document.querySelectorAll('input[name="cvTemplate"]').forEach((radio) => {
       radio.checked = radio.value === id;
     });
+
+    updatePremiumNotice(id);
 
     if (persist) saveTemplate(id);
   }
@@ -938,9 +1002,11 @@
   }
 
   function initTemplates() {
+    updatePremiumLabels();
     applyTemplate(loadSavedTemplate(), false);
-    const grid = byId('templateGrid');
-    if (grid) grid.addEventListener('change', handleTemplateChange);
+    // One listener on the whole picker covers both the free and the premium cards.
+    const picker = byId('templateSection') || byId('templateGrid');
+    if (picker) picker.addEventListener('change', handleTemplateChange);
   }
 
   /* ------------------------------------------------------------------------
@@ -995,6 +1061,12 @@
 
   function handleSavePdfClick() {
     setPdfStatus('', false);
+
+    // Locked premium templates can be previewed but not saved (see section 1).
+    if (isTemplateLocked(state.template)) {
+      setPdfStatus(PREMIUM_LOCK_MESSAGE, true);
+      return;
+    }
 
     // Same checks as "Preview CV": fix highlighted fields before exporting.
     const firstInvalid = validateForm();
