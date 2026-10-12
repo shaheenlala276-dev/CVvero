@@ -1,12 +1,14 @@
 /* ==========================================================================
-   CVvero - style.css (Version 5: five CV templates + Save as PDF toolbar)
+   CVvero - style.css (Version 6: five free CV templates + three premium
+   templates + Save as PDF toolbar)
    Mobile-first, system fonts for the app and CV body text. Michroma is
    loaded from a local file (fonts/Michroma-Regular.woff2) and used for the
    CV name and CV section titles (all templates except Minimal ATS-Friendly,
    which uses a plain system font). Fully offline.
 
    Templates are switched by the data-template attribute on #cvPreview:
-   classic | modern | ats | green | gradient
+   free:    classic | modern | ats | green | gradient
+   premium: executive | professional | creative
    ========================================================================== */
 
 /* ---------- 0. Local font (offline, no external requests) ---------- */
@@ -44,6 +46,23 @@
   --cv-green-dark: #1f4d3d;
   --cv-green-soft: #e6f1ec;
   --cv-green-line: #cfe0d6;
+
+  /* Premium template colors */
+  --cv-gold: #c9a227;
+  --cv-gold-light: #e0c36a;
+  --cv-gold-dark: #8a6d1f;
+  --cv-gold-soft: #f7f1dc;
+  --cv-gold-line: #e3d49a;
+  --cv-pro: #1d62c4;
+  --cv-pro-dark: #123f82;
+  --cv-pro-soft: #e8f0fc;
+  --cv-pro-line: #c7daf5;
+  --cv-char: #26292d;
+  --cv-char-soft: #3a3f45;
+  --cv-emerald: #0b7a59;
+  --cv-emerald-light: #4fd3a3;
+  --cv-emerald-soft: #e3f5ee;
+  --cv-emerald-line: #bfe6d6;
 
   /* Modern template sidebar stripe: navy to muted royal blue, then white. */
   --cv-stripe: linear-gradient(
@@ -627,6 +646,93 @@ textarea[aria-invalid="true"] {
   text-decoration: none;
 }
 
+/* Group headings above the free and premium cards */
+.template-group-title {
+  margin-bottom: var(--space-2);
+  font-size: 0.8rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.template-group-title--premium {
+  color: var(--cv-gold-dark);
+}
+
+/* Premium cards: PREMIUM badge, short description and lock status */
+.template-card--premium .template-card__body {
+  background: #fffdf5;
+  border-color: var(--cv-gold-line);
+}
+
+.premium-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  color: #4d3a05;
+  background: linear-gradient(135deg, #f6dc8a, #d4af37);
+  border-radius: 999px;
+}
+
+.premium-badge__icon {
+  flex: 0 0 auto;
+}
+
+.template-card__desc {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.template-card__lock {
+  margin-top: auto;
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--cv-gold-dark);
+}
+
+/* Premium notice and "How Premium access works" */
+.premium-notice {
+  margin-bottom: var(--space-4);
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #5c4306;
+  background: #fff8e1;
+  border: 1px solid #f0d98a;
+  border-radius: var(--radius-sm);
+}
+
+.premium-info {
+  margin-bottom: var(--space-4);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.premium-info summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 700;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.premium-info p + p {
+  margin-top: var(--space-2);
+}
+
 /* Mini previews: drawn with CSS only (no images, no fake text). */
 .tpl-thumb {
   display: block;
@@ -742,6 +848,77 @@ textarea[aria-invalid="true"] {
     linear-gradient(#d4e3f3, #d4e3f3) 9px 102px / 16px 6px no-repeat,
     linear-gradient(#d4e3f3, #d4e3f3) 29px 102px / 14px 6px no-repeat,
     linear-gradient(#d4e3f3, #d4e3f3) 47px 102px / 18px 6px no-repeat,
+    #ffffff;
+}
+
+/* Premium mini previews */
+.tpl-thumb--executive {
+  background:
+    linear-gradient(#ffffff, #ffffff) 9px 9px / 42px 5px no-repeat,
+    linear-gradient(#e0c36a, #e0c36a) 9px 18px / 26px 3px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)) 9px 25px / 58px 2px no-repeat,
+    linear-gradient(#c9a227, #c9a227) 0 32px / 100% 2px no-repeat,
+    linear-gradient(135deg, #0d2043, #13294b) 0 0 / 100% 32px no-repeat,
+    linear-gradient(#13294b, #13294b) 9px 43px / 24px 3px no-repeat,
+    linear-gradient(#c9a227, #c9a227) 9px 48px / 66px 1px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 54px / 62px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 59px / 54px 2px no-repeat,
+    linear-gradient(#13294b, #13294b) 9px 69px / 24px 3px no-repeat,
+    linear-gradient(#c9a227, #c9a227) 9px 74px / 66px 1px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 80px / 62px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 85px / 50px 2px no-repeat,
+    linear-gradient(#13294b, #13294b) 9px 95px / 18px 3px no-repeat,
+    linear-gradient(#f7f1dc, #f7f1dc) 9px 102px / 16px 6px no-repeat,
+    linear-gradient(#f7f1dc, #f7f1dc) 29px 102px / 14px 6px no-repeat,
+    linear-gradient(#f7f1dc, #f7f1dc) 47px 102px / 18px 6px no-repeat,
+    #ffffff;
+}
+
+.tpl-thumb--professional {
+  background:
+    linear-gradient(#123f82, #123f82) 14px 9px / 40px 5px no-repeat,
+    linear-gradient(#1d62c4, #1d62c4) 14px 18px / 26px 3px no-repeat,
+    linear-gradient(#c3ccd6, #c3ccd6) 14px 25px / 52px 2px no-repeat,
+    linear-gradient(#1d62c4, #1d62c4) 9px 7px / 3px 24px no-repeat,
+    linear-gradient(#1d62c4, #1d62c4) 9px 39px / 2px 7px no-repeat,
+    linear-gradient(#e8f0fc, #e8f0fc) 9px 39px / 66px 7px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 14px 51px / 58px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 14px 56px / 50px 2px no-repeat,
+    linear-gradient(#c7daf5, #c7daf5) 9px 51px / 1px 10px no-repeat,
+    linear-gradient(#1d62c4, #1d62c4) 9px 67px / 2px 7px no-repeat,
+    linear-gradient(#e8f0fc, #e8f0fc) 9px 67px / 66px 7px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 14px 79px / 58px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 14px 84px / 46px 2px no-repeat,
+    linear-gradient(#c7daf5, #c7daf5) 9px 79px / 1px 10px no-repeat,
+    linear-gradient(#1d62c4, #1d62c4) 9px 95px / 2px 7px no-repeat,
+    linear-gradient(#e8f0fc, #e8f0fc) 9px 95px / 66px 7px no-repeat,
+    linear-gradient(#c7daf5, #c7daf5) 14px 106px / 16px 6px no-repeat,
+    linear-gradient(#c7daf5, #c7daf5) 34px 106px / 14px 6px no-repeat,
+    linear-gradient(#c7daf5, #c7daf5) 52px 106px / 18px 6px no-repeat,
+    #ffffff;
+}
+
+.tpl-thumb--creative {
+  background:
+    linear-gradient(#ffffff, #ffffff) 9px 9px / 42px 5px no-repeat,
+    linear-gradient(#4fd3a3, #4fd3a3) 9px 18px / 26px 3px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)) 9px 25px / 56px 2px no-repeat,
+    linear-gradient(#0b7a59, #0b7a59) 0 31px / 100% 3px no-repeat,
+    linear-gradient(120deg, #26292d, #3a3f45) 0 0 / 100% 31px no-repeat,
+    linear-gradient(#26292d, #26292d) 9px 43px / 24px 3px no-repeat,
+    linear-gradient(#0b7a59, #0b7a59) 9px 48px / 24px 2px no-repeat,
+    linear-gradient(#0b7a59, #0b7a59) 9px 55px / 3px 3px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 15px 55px / 56px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 61px / 60px 2px no-repeat,
+    linear-gradient(#26292d, #26292d) 9px 71px / 24px 3px no-repeat,
+    linear-gradient(#0b7a59, #0b7a59) 9px 76px / 24px 2px no-repeat,
+    linear-gradient(#0b7a59, #0b7a59) 9px 83px / 3px 3px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 15px 83px / 50px 2px no-repeat,
+    linear-gradient(#cfd6de, #cfd6de) 9px 89px / 58px 2px no-repeat,
+    linear-gradient(#26292d, #26292d) 9px 97px / 18px 3px no-repeat,
+    linear-gradient(#e3f5ee, #e3f5ee) 9px 104px / 16px 6px no-repeat,
+    linear-gradient(#e3f5ee, #e3f5ee) 29px 104px / 14px 6px no-repeat,
+    linear-gradient(#e3f5ee, #e3f5ee) 47px 104px / 18px 6px no-repeat,
     #ffffff;
 }
 
@@ -1219,13 +1396,179 @@ textarea[aria-invalid="true"] {
   border-color: #c5dcef;
 }
 
-/* ---------- 11f. Small phones (screen only) ---------- */
+/* ---------- 11f. PREMIUM template: Executive Elite (navy and gold) ---------- */
+.cv-sheet[data-template="executive"] {
+  --t-name: #ffffff;
+  --t-title: var(--cv-gold-light);
+  --t-head: var(--cv-navy);
+  --t-sub: var(--cv-gold-dark);
+  --t-link: var(--cv-gold-dark);
+}
+
+.cv-sheet[data-template="executive"] .cv-header {
+  padding: 22px 26px 18px;
+  color: #ffffff;
+  background-color: var(--cv-navy-deep);
+  background-image: linear-gradient(135deg, var(--cv-navy-deep), var(--cv-navy));
+  border-bottom: 4px solid var(--cv-gold);
+  border-radius: 4px 4px 0 0;
+}
+
+.cv-sheet[data-template="executive"] .cv-contact {
+  margin-top: 12px;
+  padding-top: 10px;
+  color: var(--cv-navy-text);
+  border-top: 1px solid rgba(224, 195, 106, 0.5);
+}
+
+.cv-sheet[data-template="executive"] .cv-section__title {
+  letter-spacing: 1.6px;
+  border-bottom: 1px solid var(--cv-gold);
+}
+
+.cv-sheet[data-template="executive"] .cv-item__date {
+  font-weight: 600;
+  color: var(--cv-gold-dark);
+}
+
+.cv-sheet[data-template="executive"] .cv-tag {
+  color: var(--cv-navy);
+  background: var(--cv-gold-soft);
+  border-color: var(--cv-gold-line);
+}
+
+/* ---------- 11g. PREMIUM template: Modern Professional (blue and white) ---------- */
+.cv-sheet[data-template="professional"] {
+  --t-name: var(--cv-pro-dark);
+  --t-title: var(--cv-pro);
+  --t-head: var(--cv-pro-dark);
+  --t-sub: var(--cv-pro);
+  --t-link: var(--cv-pro);
+}
+
+.cv-sheet[data-template="professional"] .cv-header {
+  padding: 4px 0 14px 16px;
+  border-left: 6px solid var(--cv-pro);
+  border-bottom: 1px solid var(--cv-pro-line);
+}
+
+.cv-sheet[data-template="professional"] .cv-contact {
+  color: #33475f;
+}
+
+.cv-sheet[data-template="professional"] .cv-section__title {
+  padding: 4px 10px;
+  background: var(--cv-pro-soft);
+  border-left: 4px solid var(--cv-pro);
+  border-radius: 0 4px 4px 0;
+}
+
+.cv-sheet[data-template="professional"] .cv-item {
+  padding-left: 12px;
+  border-left: 2px solid var(--cv-pro-line);
+}
+
+.cv-sheet[data-template="professional"] .cv-item__date {
+  font-weight: 600;
+  color: var(--cv-pro);
+}
+
+.cv-sheet[data-template="professional"] .cv-tag {
+  color: var(--cv-pro-dark);
+  background: var(--cv-pro-soft);
+  border-color: var(--cv-pro-line);
+}
+
+/* ---------- 11h. PREMIUM template: Elegant Creative (emerald and charcoal) ---------- */
+.cv-sheet[data-template="creative"] {
+  --t-name: #ffffff;
+  --t-title: var(--cv-emerald-light);
+  --t-head: var(--cv-char);
+  --t-sub: var(--cv-emerald);
+  --t-link: var(--cv-emerald);
+}
+
+.cv-sheet[data-template="creative"] .cv-header {
+  padding: 20px 24px;
+  color: #ffffff;
+  background-color: var(--cv-char);
+  background-image: linear-gradient(120deg, var(--cv-char) 0%, var(--cv-char-soft) 100%);
+  border-bottom: 5px solid var(--cv-emerald);
+  border-radius: 6px 6px 0 0;
+}
+
+.cv-sheet[data-template="creative"] .cv-contact {
+  margin-top: 12px;
+  padding-top: 10px;
+  color: #e6ece9;
+  border-top: 1px solid rgba(79, 211, 163, 0.4);
+}
+
+.cv-sheet[data-template="creative"] .cv-section__title {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding-right: 14px;
+  border-bottom: 3px solid var(--cv-emerald);
+}
+
+.cv-sheet[data-template="creative"] .cv-item__title::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  vertical-align: middle;
+  background: var(--cv-emerald);
+  border-radius: 1px;
+}
+
+.cv-sheet[data-template="creative"] .cv-item__date {
+  font-weight: 600;
+  color: var(--cv-emerald);
+}
+
+.cv-sheet[data-template="creative"] .cv-tag {
+  color: var(--cv-char);
+  background: var(--cv-emerald-soft);
+  border-color: var(--cv-emerald-line);
+}
+
+/* ---------- 11i. Locked premium preview mark ----------
+   Shown on screen and in print while a premium template is locked (see
+   PREMIUM_UNLOCKED in script.js). It is a visual marker only, not security.
+   ---------------------------------------------------------------- */
+.cv-sheet[data-locked="true"] {
+  position: relative;
+}
+
+.cv-sheet[data-locked="true"]::after {
+  content: "PREMIUM PREVIEW";
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  z-index: 2;
+  padding: 0.3em 0.6em;
+  font-family: var(--font-sans);
+  font-size: clamp(1.2rem, 6vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  color: rgba(180, 35, 24, 0.16);
+  border: 3px solid rgba(180, 35, 24, 0.16);
+  transform: translate(-50%, -50%) rotate(-28deg);
+  pointer-events: none;
+}
+
+/* ---------- 11j. Small phones (screen only) ---------- */
 @media screen and (max-width: 599px) {
   .cv-main {
     padding: 20px 16px;
   }
 
-  .cv-sheet[data-template="gradient"] .cv-header {
+  .cv-sheet[data-template="gradient"] .cv-header,
+  .cv-sheet[data-template="executive"] .cv-header,
+  .cv-sheet[data-template="creative"] .cv-header {
     padding: 16px;
   }
 
@@ -1487,6 +1830,29 @@ textarea[aria-invalid="true"] {
     padding-top: 2.5mm;
   }
 
+  /* Premium header bands */
+  .cv-sheet[data-template="executive"] .cv-header,
+  .cv-sheet[data-template="creative"] .cv-header {
+    padding: 6mm 7mm;
+    border-radius: 1.5mm 1.5mm 0 0;
+  }
+
+  .cv-sheet[data-template="executive"] .cv-contact,
+  .cv-sheet[data-template="creative"] .cv-contact {
+    margin-top: 3mm;
+    padding-top: 2.5mm;
+  }
+
+  .cv-sheet[data-template="professional"] .cv-header {
+    padding: 1mm 0 4mm 5mm;
+  }
+
+  /* Locked premium mark: keep it on the first page's content area */
+  .cv-sheet[data-locked="true"]::after {
+    top: 110mm;
+    font-size: 30pt;
+  }
+
   /* Shared type scale */
   .cv-name {
     font-size: 19pt;
@@ -1571,8 +1937,8 @@ textarea[aria-invalid="true"] {
   }
 
   /* Fallback: only for a browser that cannot force background printing.
-     The Modern sidebar and the Gradient header then print as dark text on
-     white, so everything stays readable. */
+     The Modern sidebar and the Gradient, Executive and Creative header
+     bands then print as dark text on white, so everything stays readable. */
   @supports not ((print-color-adjust: exact) or (-webkit-print-color-adjust: exact)) {
     html[data-template="modern"],
     .cv-sheet[data-template="modern"] {
@@ -1612,6 +1978,35 @@ textarea[aria-invalid="true"] {
     }
 
     .cv-sheet[data-template="gradient"] .cv-contact {
+      color: #1f2933;
+      border-top-color: var(--cv-rule);
+    }
+
+    .cv-sheet[data-template="executive"] .cv-header,
+    .cv-sheet[data-template="creative"] .cv-header {
+      background-image: none;
+      background-color: #ffffff;
+      border-radius: 0;
+    }
+
+    .cv-sheet[data-template="executive"] .cv-name {
+      color: var(--cv-navy);
+    }
+
+    .cv-sheet[data-template="executive"] .cv-title {
+      color: var(--cv-gold-dark);
+    }
+
+    .cv-sheet[data-template="creative"] .cv-name {
+      color: var(--cv-char);
+    }
+
+    .cv-sheet[data-template="creative"] .cv-title {
+      color: var(--cv-emerald);
+    }
+
+    .cv-sheet[data-template="executive"] .cv-contact,
+    .cv-sheet[data-template="creative"] .cv-contact {
       color: #1f2933;
       border-top-color: var(--cv-rule);
     }
